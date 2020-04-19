@@ -22,5 +22,5 @@ public:
 	int mouse_x = 0, mouse_y = 0;
 	int cooldown = 0;
 	bool shoot_flag = false;
-	int score;
+	int score = 0;
 };

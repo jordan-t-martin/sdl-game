@@ -1,0 +1,3 @@
+﻿  main.cpp
+J:\Desktop\github\sdl-game\sdl-game\main.cpp(22,21): warning C4018: '<': signed/unsigned mismatch
+  sdl-game.vcxproj -> J:\Desktop\github\sdl-game\Debug\sdl-game.exe

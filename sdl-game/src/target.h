@@ -1,7 +1,9 @@
 #pragma once
 #include "rect.h"
 #include "text.h"
+#include <vector>
 #include <string>
+#include <map>
 
 
 class Target : public Rect {

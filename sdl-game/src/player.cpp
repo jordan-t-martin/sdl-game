@@ -5,17 +5,11 @@
 Player::Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g, int b, int a)
 	: Rect(renderer, w, h, x, y, r, g, b, a)
 {
-
-}
-
-Player::Player(SDL_Renderer* renderer, int w, int h, int x, int y, std::vector<std::shared_ptr<Sprite>> sprites)
-	: Rect(renderer, w, h, x, y, sprites.at(0)->_texture_path), _sprites(sprites)
-{
-	//std::vector<SDL_Surface> surfaces;
+	_sprites = createSprites();
 	
-	for (int i = 0; i < sprites.size(); i++) {
+	for (int i = 0; i < _sprites.size(); i++) {
 		// Create surface from image using file path
-		auto surface = IMG_Load(sprites.at(i)->_texture_path.c_str());
+		auto surface = IMG_Load(_sprites.at(i)->_texture_path.c_str());
 
 		// Check if surface was created successfully
 		if (!surface) {
@@ -95,7 +89,7 @@ void Player::reloadTexture(SDL_Renderer* renderer, std::string image_path)
 */
 
 
-void Player::processInput() {
+void Player::update() {
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
 	if (keystate[SDL_SCANCODE_A]) {
@@ -179,4 +173,17 @@ void Player::shoot(int diff_x, int diff_y) {
 			frame = 0;
 		}
 	}
+}
+
+std::vector<std::shared_ptr<Sprite>> Player::createSprites() {
+	std::vector<std::shared_ptr<Sprite>> sprites;
+	std::shared_ptr<Sprite> spr1(new Sprite(4, 74, "assets/sprite-sheets/player_left.png"));
+	std::shared_ptr<Sprite> spr2(new Sprite(4, 74, "assets/sprite-sheets/player_right.png"));
+	std::shared_ptr<Sprite> spr3(new Sprite(8, 74, "assets/sprite-sheets/player_up.png"));
+	std::shared_ptr<Sprite> spr4(new Sprite(8, 74, "assets/sprite-sheets/player_down.png"));
+	sprites.push_back(spr1);
+	sprites.push_back(spr2);
+	sprites.push_back(spr3);
+	sprites.push_back(spr4);
+	return sprites;
 }

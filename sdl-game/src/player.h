@@ -8,14 +8,15 @@
 class Player : public Rect {
 public:	
 	Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g, int b, int a);
-	Player(SDL_Renderer* renderer, int w, int h, int x, int y, std::vector<std::shared_ptr<Sprite>> sprites);
+	Player(SDL_Renderer* renderer, int w, int h, int x, int y);
 	~Player();
 
 	void draw(SDL_Renderer* renderer);
-	void reloadTexture(SDL_Renderer* renderer, std::string image_path);
-	void processInput();
+	//void reloadTexture(SDL_Renderer* renderer, std::string image_path);
+	void update();
 	void pollEvents(SDL_Event& event);
 	void shoot(int diff_x, int diff_y);
+	std::vector<std::shared_ptr<Sprite>> createSprites();
 
 	enum direction{ left, right, up, down };
 	std::vector<std::shared_ptr<Sprite>> _sprites;

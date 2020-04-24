@@ -1,13 +1,14 @@
 #include "rect.h"
-#include "window.h"
 #include <iostream>
 
+// Constructor for color texture
 Rect::Rect(SDL_Renderer *renderer, int w, int h, int x, int y, int r, int g, int b, int a) :
 	_w(w), _h(h), _x(x), _y(y), _r(r), _g(g), _b(b), _a(a)
 {
 
 }
 
+// Constructor for image texture
 Rect::Rect(SDL_Renderer *renderer, int w, int h, int x, int y, const std::string& image_path) :
 	_w(w), _h(h), _x(x), _y(y)
 {
@@ -32,18 +33,10 @@ Rect::Rect(SDL_Renderer *renderer, int w, int h, int x, int y, const std::string
 }
 
 Rect::~Rect() {
+	// Destroy texture
 	if(_texture != NULL)
 		SDL_DestroyTexture(_texture);
 }
-
-int Rect::getW() { return _w;}
-int Rect::getH() { return _h; }
-int Rect::getX() { return _x; }
-int Rect::getY() { return _y; }
-void Rect::setW(int w) { _w = w; }
-void Rect::setH(int h) { _h = h; }
-void Rect::setX(int x) { _x = x; }
-void Rect::setY(int y) { _y = y; }
 
 void Rect::draw(SDL_Renderer *renderer) const {
 	// Create rectangle using position and dimensions
@@ -60,14 +53,16 @@ void Rect::draw(SDL_Renderer *renderer) const {
 	}
 }
 
-bool Rect::colliding(Rect* a) {
-	// No collision
-	if (a->_x + a->_w < this->_x || a->_x > this->_x + this->_w ||
-		a->_y + a->_h < this->_y || a->_y > this->_y + this->_h) {
+bool Rect::colliding(Rect* r) {
+	// No collision.
+	if (r->_x + r->_w < this->_x || // [r] left of [this]
+		r->_x > this->_x + this->_w || // [r] right of [this]
+		r->_y + r->_h < this->_y || // [r] above [this] 
+		r->_y > this->_y + this->_h) // [r] below [this]
 		return false;
-	}
-	else
-		return true;
+
+	// Collision!
+	return true;
 }
 
 void Rect::pollEvents(SDL_Event &event) {

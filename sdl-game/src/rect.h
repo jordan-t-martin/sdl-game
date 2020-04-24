@@ -8,17 +8,20 @@ public:
 	Rect(SDL_Renderer *renderer, int w, int h, int x, int y, int r, int g, int b, int a);
 	Rect(SDL_Renderer *renderer, int w, int h, int x, int y, const std::string &image_path);
 	~Rect();
-	int getW();
-	int getH();
-	int getX();
-	int getY();
-	void setW(int w);
-	void setH(int h);
-	void setX(int x);
-	void setY(int y);
+
 	virtual void draw(SDL_Renderer* renderer) const;
 	bool colliding(Rect* a);
 	void pollEvents(SDL_Event& event);
+
+	int inline getW() { return _w; }
+	int inline getH() { return _h; }
+	int inline getX() { return _x; }
+	int inline getY() { return _y; }
+	void inline setW(int w) { _w = w; }
+	void inline setH(int h) { _h = h; }
+	void inline setX(int x) { _x = x; }
+	void inline setY(int y) { _y = y; }
+
 
 protected:
 	int _w, _h;

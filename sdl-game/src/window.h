@@ -15,18 +15,16 @@ public:
 
 	inline bool isClosed() const { return _closed; }
 
+	static SDL_Renderer* renderer;
+
 private:
 	bool init();
 
-private:
 	std::string _title;
 	int _width = 800;
 	int _height = 600;
-
+	int _mouse_x, _mouse_y = 0;
 	bool _closed = false;
-	
 	SDL_Window* _window = nullptr;
-
-public:
-	static SDL_Renderer* renderer;
+	
 };

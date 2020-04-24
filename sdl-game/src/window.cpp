@@ -1,7 +1,6 @@
 #include "window.h"
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <iostream>
 
 SDL_Renderer *Window::renderer = nullptr;
 
@@ -65,20 +64,24 @@ bool Window::init() {
 	// Check renderer was created
 	if (renderer == nullptr) {
 		std::cerr << "Failed to create renderer.\n";
-		return 0;
+		return false;
 	}
 	
-	// Disable the cursor
+	// Disable the original cursor
 	SDL_ShowCursor(SDL_DISABLE);
 
+	// Intialization complete
 	return true;
 }
 
 void Window::update(std::shared_ptr<Rect> cursor) {
-	int mouse_x, mouse_y;
-	SDL_GetMouseState(&mouse_x, &mouse_y);
-	cursor->setX(mouse_x - (cursor->getW() / 2));
-	cursor->setY(mouse_y- (cursor->getH() / 2));
+	// Cursor Image
+	// Get x/y coordinate of mouse
+	SDL_GetMouseState(&_mouse_x, &_mouse_y);
+	
+	// Adjust for center of rectangle
+	cursor->setX(_mouse_x - (cursor->getW() / 2));
+	cursor->setY(_mouse_y- (cursor->getH() / 2));
 }
 
 void Window::pollEvents(SDL_Event &event) {

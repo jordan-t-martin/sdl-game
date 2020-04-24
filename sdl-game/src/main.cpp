@@ -27,22 +27,31 @@ void pollEvents(Window& window, Player& player, Projectile& projectiles) {
 int main(int argc, char** argv) {
 	
 	// Create all game objects
+
+	// Game window
 	Window window("SDL_Game", SCREEN_WIDTH, SCREEN_HEIGHT);
-	Rect rect(Window::renderer, 840, 320, 0, 0, "assets/textures/wood.png");
+
+	// Cursor image
 	std::shared_ptr<Rect> cursor(new Rect(Window::renderer, 64, 64, 0, 0, "assets/textures/reticle_sprite.png"));
+
+	// Still objects
+	Rect rect(Window::renderer, 840, 320, 0, 0, "assets/textures/wood.png");
+
+	// Player character
 	std::shared_ptr<Player> player(new Player(Window::renderer, 64, 64, 500, 500, 0, 0, 0, 0));
+
+	// Targets and bullets
 	Projectile projectiles(Window::renderer);
+
+	// Text
 	Text title(Window::renderer, "assets/consolab.ttf", 30, "Target Practice!", { 255, 0, 0 , 255 });
 	Text score(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles.score), { 255, 0, 0 , 255 });
 
 	// Game loop, stops if window is closed
 	while (!window.isClosed()) {
 		pollEvents(window, *player, projectiles);
-		// Custom image cursor
-		window.update(cursor);
-		cursor->draw(Window::renderer);
 
-		// Still textures
+		// Still objects
 		rect.draw(Window::renderer);
 
 		// Player character
@@ -58,8 +67,14 @@ int main(int argc, char** argv) {
 		score.reloadTexture(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles.score), { 255, 0, 0 , 255 });
 		score.display(20, 50, Window::renderer);
 		
+		// Cursor image
+		window.update(cursor);
+		cursor->draw(Window::renderer);
+
+		// Update screen with all draws
 		window.clear();
 	}
 
+	// Successful exit
 	return 0;
 }

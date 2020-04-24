@@ -44,8 +44,8 @@ int main(int argc, char** argv) {
 	Projectile projectiles(Window::renderer);
 
 	// Text
-	Text title(Window::renderer, "assets/consolab.ttf", 30, "Target Practice!", { 255, 0, 0 , 255 });
-	Text score(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles.score), { 255, 0, 0 , 255 });
+	Text title(Window::renderer, "assets/consolab.ttf", 30, "Target Practice!", { 255, 0, 0 , 255 }, 20, 20);
+	Text score(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles.score), { 255, 0, 0 , 255 }, 20, 50);
 
 	// Game loop, stops if window is closed
 	while (!window.isClosed()) {
@@ -63,9 +63,9 @@ int main(int argc, char** argv) {
 		projectiles.draw(Window::renderer);
 
 		// Text 
-		title.display(20, 20, Window::renderer);
+		title.draw(Window::renderer);
 		score.reloadTexture(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles.score), { 255, 0, 0 , 255 });
-		score.display(20, 50, Window::renderer);
+		score.draw(Window::renderer);
 		
 		// Cursor image
 		window.update(cursor);

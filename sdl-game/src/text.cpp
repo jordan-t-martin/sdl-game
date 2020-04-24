@@ -2,19 +2,21 @@
 #include "window.h"
 #include <iostream>
 
-Text::Text(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message_text, const SDL_Color &color)
+Text::Text(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message_text, const SDL_Color &color, int x, int y) : _x(x), _y(y)
 {
-	_text_texture = loadFont(renderer, font_path, font_size, message_text, color);
+	// Load the texture
+	_text_texture = loadTexture(renderer, font_path, font_size, message_text, color);
 	
-	// Give texture width and height from font size and text length
+	// Get texture width and height from font size and text length
 	// Save this info to the text rectangle
 	SDL_QueryTexture(_text_texture, nullptr, nullptr, &_text_rect.w, &_text_rect.h);
 }
 
-void Text::display(int x, int y, SDL_Renderer *renderer) const {
-	// Position is set during display, not during construction
-	_text_rect.x = x;
-	_text_rect.y = y;
+// Renders text rectangle to screen every tick
+void Text::draw(SDL_Renderer *renderer) const {
+	// Update position
+	_text_rect.x = _x;
+	_text_rect.y = _y;
 
 	// If texture exists, then copy texture to rectangle.
 	if (_text_texture) {
@@ -23,12 +25,18 @@ void Text::display(int x, int y, SDL_Renderer *renderer) const {
 	
 }
 
+// Reload texture with new string value
 void Text::reloadTexture(SDL_Renderer* renderer, const std::string& font_path, int font_size, const std::string& message_text, const SDL_Color& color) {
-	_text_texture = loadFont(renderer, font_path, font_size, message_text, color);
+	// Load the texture 
+	_text_texture = loadTexture(renderer, font_path, font_size, message_text, color);
+	
+	// Get texture width and height from font size and text length
+	// Save this info to the text rectangle
 	SDL_QueryTexture(_text_texture, nullptr, nullptr, &_text_rect.w, &_text_rect.h);
 }
 
-SDL_Texture* Text::loadFont(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message_text, const SDL_Color &color) {
+// Load the texture of the string
+SDL_Texture* Text::loadTexture(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message_text, const SDL_Color &color) {
 	// Create font from font path
 	TTF_Font *font = TTF_OpenFont(font_path.c_str(), font_size);
 	

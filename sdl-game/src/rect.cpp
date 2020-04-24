@@ -38,6 +38,7 @@ Rect::~Rect() {
 		SDL_DestroyTexture(_texture);
 }
 
+// Render updates to the screen every tick
 void Rect::draw(SDL_Renderer *renderer) const {
 	// Create rectangle using position and dimensions
 	SDL_Rect rect = { _x, _y, _w, _h };
@@ -53,6 +54,7 @@ void Rect::draw(SDL_Renderer *renderer) const {
 	}
 }
 
+// Check if another rectangle is colliding with this one
 bool Rect::colliding(Rect* r) {
 	// No collision.
 	if (r->_x + r->_w < this->_x || // [r] left of [this]
@@ -65,6 +67,7 @@ bool Rect::colliding(Rect* r) {
 	return true;
 }
 
+// Check if an event has occurred every tick
 void Rect::pollEvents(SDL_Event &event) {
 
 }

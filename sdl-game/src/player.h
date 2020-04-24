@@ -3,26 +3,42 @@
 #include "sprite.h"
 #include <vector>
 #include <iostream>
-#include <string>
 
 class Player : public Rect {
 public:	
 	Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g, int b, int a);
-	Player(SDL_Renderer* renderer, int w, int h, int x, int y);
 	~Player();
 
 	void draw(SDL_Renderer* renderer);
-	//void reloadTexture(SDL_Renderer* renderer, std::string image_path);
 	void update();
 	void pollEvents(SDL_Event& event);
 	void shoot(int diff_x, int diff_y);
+	
+	int inline getDir() { return _dir; }
+	bool inline getWalking() { return _walking; }
+	void inline setDir(int dir) { _dir = dir; }
+	void inline setWalking(bool walking) { _walking = walking; }
+	
+	enum direction{ left, right, up, down };
+
+private:
 	std::vector<std::shared_ptr<Sprite>> createSprites();
 
-	enum direction{ left, right, up, down };
+	int _frame = 0;
+	int _dir = down;
+	int _anim_speed = 5;
+	bool _walking = false; 
+	std::vector<SDL_Texture*> _textures;
 	std::vector<std::shared_ptr<Sprite>> _sprites;
-	int frame = 0;
-	std::vector<SDL_Texture*> textures;
-	bool walking = false; // Start facing down
-	int dir = down;
-	SDL_Texture* _texture = nullptr;
+
+	// Constant values for sprite creation
+	const std::string PLAYER_LEFT_PATH = "assets/sprite-sheets/player_left.png";
+	const std::string PLAYER_RIGHT_PATH = "assets/sprite-sheets/player_right.png";
+	const std::string PLAYER_UP_PATH = "assets/sprite-sheets/player_up.png";
+	const std::string PLAYER_DOWN_PATH = "assets/sprite-sheets/player_down.png";
+	const int PLAYER_SIZE = 74;
+	const int PLAYER_LEFT_FRAMES = 4;
+	const int PLAYER_RIGHT_FRAMES = 4;
+	const int PLAYER_UP_FRAMES = 8;
+	const int PLAYER_DOWN_FRAMES = 8;
 };

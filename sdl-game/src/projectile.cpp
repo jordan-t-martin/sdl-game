@@ -20,7 +20,7 @@ void Projectile::draw(SDL_Renderer* renderer) {
 
 void Projectile::update(SDL_Renderer* renderer, std::shared_ptr<Player> player) {
 	if (cooldown == 0) {
-		if (shoot_flag && !player->walking) {
+		if (shoot_flag && !player->getWalking()) {
 			SDL_GetMouseState(&mouse_x, &mouse_y);
 			createProjectile(renderer, 12, 12, (float)mouse_x, (float)mouse_y, 5, 5, 5, player);
 			cooldown = 10;
@@ -77,17 +77,17 @@ void Projectile::createProjectile(SDL_Renderer* renderer, int w, int h, int end_
 
 	player->shoot(diff_x, diff_y);
 
-	if (player->dir == Player::left) {
+	if (player->getDir() == Player::left) {
 		start_y += player->getH() / 2;
 	}
-	else if (player->dir == Player::right) {
+	else if (player->getDir() == Player::right) {
 		start_x += player->getW();
 		start_y += player->getH() / 2;
 	}
-	else if (player->dir == Player::up) {
+	else if (player->getDir() == Player::up) {
 		start_x += player->getW() / 2;
 	}
-	else if (player->dir == Player::down) {
+	else if (player->getDir() == Player::down) {
 		start_x += player->getW() / 2;
 		start_y += player->getH();
 	}

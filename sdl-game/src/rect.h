@@ -17,6 +17,7 @@ public:
 	int inline getH() { return _h; }
 	int inline getX() { return _x; }
 	int inline getY() { return _y; }
+
 	void inline setW(int w) { _w = w; }
 	void inline setH(int h) { _h = h; }
 	void inline setX(int x) { _x = x; }

@@ -12,7 +12,7 @@ Player::Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g,
 	// For all sprites created...
 	for (int i = 0; i < _sprites.size(); i++) {
 		// Create surface from image using file path
-		auto surface = IMG_Load(_sprites.at(i)->_texture_path.c_str());
+		auto surface = IMG_Load(_sprites.at(i)->getTexturePath().c_str());
 
 		// Check if surface was created successfully
 		if (!surface) {
@@ -70,7 +70,7 @@ void Player::draw(SDL_Renderer* renderer) {
 	SDL_Rect rect = { _x, _y, _w, _h };
 
 	// Check that clips exists
-	if (_sprites.at(_dir)->_sprite_clips == nullptr) {
+	if (_sprites.at(_dir)->getSpriteClips() == nullptr) {
 		std::cerr << "Clips are empty.\n";
 		return;
 	}
@@ -85,18 +85,18 @@ void Player::draw(SDL_Renderer* renderer) {
 
 		// If animation frame is greater than number of sprites, reset frame to 0 
 		// Divide by animation speed to slow animation over game loop
-		if (_frame / _anim_speed >= _sprites.at(_dir)->_sprite_num) 
+		if (_frame / _anim_speed >= _sprites.at(_dir)->getSpriteNum()) 
 			_frame = 0;
 	}
 	
 	// Set the rectangle to be the size of the sprite using clips
-	rect.w = _sprites.at(_dir)->_sprite_clips[_frame/_anim_speed].w;
-	rect.h = _sprites.at(_dir)->_sprite_clips[_frame/_anim_speed].h;
+	rect.w = _sprites.at(_dir)->getSpriteClips()[_frame/_anim_speed].w;
+	rect.h = _sprites.at(_dir)->getSpriteClips()[_frame/_anim_speed].h;
 
 	// If texture exists, then copy texture to rectangle. 
 	if (_texture) {
 		// Pass in clip to render only portion of texture onto rect
-		SDL_RenderCopy(renderer, _texture, &_sprites.at(_dir)->_sprite_clips[_frame/_anim_speed], &rect);
+		SDL_RenderCopy(renderer, _texture, &_sprites.at(_dir)->getSpriteClips()[_frame/_anim_speed], &rect);
 	}
 }
 

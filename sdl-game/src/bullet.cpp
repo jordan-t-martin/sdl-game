@@ -5,7 +5,7 @@
 
 // take distance out
 Bullet::Bullet(SDL_Renderer* renderer, int w, int h, float start_x, float start_y, float end_x, float end_y, int range, int speed, int distance, std::vector<std::shared_ptr<Sprite>> sprites)
-	: Rect(renderer, w, h, (int) start_x, (int) start_y, sprites.at(0)->_texture_path), 
+	: Rect(renderer, w, h, (int) start_x, (int) start_y, sprites.at(0)->getTexturePath()), 
 	_start_x(start_x), _start_y(start_y), _end_x(end_x), _end_y(end_y), _range(range), _speed(speed), _distance(distance), _sprites(sprites)
 {
 	
@@ -26,7 +26,7 @@ Bullet::Bullet(SDL_Renderer* renderer, int w, int h, float start_x, float start_
 
 	position = Vector2(_x, _y);
 	// Create surface from image using file path
-	auto surface = IMG_Load(_sprites.at(0)->_texture_path.c_str());
+	auto surface = IMG_Load(_sprites.at(0)->getTexturePath().c_str());
 
 	// Check if surface was created successfully
 	if (!surface) {
@@ -91,18 +91,18 @@ void Bullet::draw(SDL_Renderer* renderer) {
 
 	_index = findDirection();
 
-	if (_sprites.at(0)->_sprite_clips == nullptr) {
+	if (_sprites.at(0)->getSpriteClips() == nullptr) {
 		std::cerr << "Clips are empty.\n";
 		return;
 	}
 
 	// Set the rectangle to be the size of the sprite
-	myrect.w = _sprites.at(0)->_sprite_clips[_index].w;
-	myrect.h = _sprites.at(0)->_sprite_clips[_index].h;
+	myrect.w = _sprites.at(0)->getSpriteClips()[_index].w;
+	myrect.h = _sprites.at(0)->getSpriteClips()[_index].h;
 
 	// If texture exists, then copy texture to rectangle. 
 	if (_texture) {
-		SDL_RenderCopy(renderer, _texture, &_sprites.at(0)->_sprite_clips[_index], &myrect);
+		SDL_RenderCopy(renderer, _texture, &_sprites.at(0)->getSpriteClips()[_index], &myrect);
 	}
 }
 

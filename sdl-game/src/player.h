@@ -38,8 +38,8 @@ private:
 	const std::string PLAYER_UP_PATH = "assets/sprite-sheets/player_up.png";
 	const std::string PLAYER_DOWN_PATH = "assets/sprite-sheets/player_down.png";
 	const int PLAYER_SIZE = 74;
-	const int PLAYER_LEFT_FRAMES = 4;
-	const int PLAYER_RIGHT_FRAMES = 4;
-	const int PLAYER_UP_FRAMES = 8;
-	const int PLAYER_DOWN_FRAMES = 8;
+	const int PLAYER_LEFT_SPRITE_NUM = 4;
+	const int PLAYER_RIGHT_SPRITE_NUM = 4;
+	const int PLAYER_UP_SPRITE_NUM = 8;
+	const int PLAYER_DOWN_SPRITE_NUM = 8;
 };

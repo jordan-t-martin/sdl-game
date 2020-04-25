@@ -8,7 +8,7 @@ Player::Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g,
 	_sprites = createSprites();
 	
 	// For all sprites created...
-	for (int i = 0; i < _sprites.size(); i++) {
+	for (size_t i = 0; i < _sprites.size(); i++) {
 		// Create surface from image using file path
 		auto surface = IMG_Load(_sprites.at(i)->getTexturePath().c_str());
 
@@ -48,10 +48,10 @@ std::vector<std::shared_ptr<Sprite>> Player::createSprites() {
 	std::vector<std::shared_ptr<Sprite>> sprites;
 
 	// Create sprites from constants
-	std::shared_ptr<Sprite> left(new Sprite(PLAYER_LEFT_FRAMES, PLAYER_SIZE, PLAYER_LEFT_PATH));
-	std::shared_ptr<Sprite> right(new Sprite(PLAYER_RIGHT_FRAMES, PLAYER_SIZE, PLAYER_RIGHT_PATH));
-	std::shared_ptr<Sprite> up(new Sprite(PLAYER_UP_FRAMES, PLAYER_SIZE, PLAYER_UP_PATH));
-	std::shared_ptr<Sprite> down(new Sprite(PLAYER_DOWN_FRAMES, PLAYER_SIZE, PLAYER_DOWN_PATH));
+	std::shared_ptr<Sprite> left(new Sprite(PLAYER_LEFT_SPRITE_NUM, PLAYER_SIZE, PLAYER_LEFT_PATH));
+	std::shared_ptr<Sprite> right(new Sprite(PLAYER_RIGHT_SPRITE_NUM, PLAYER_SIZE, PLAYER_RIGHT_PATH));
+	std::shared_ptr<Sprite> up(new Sprite(PLAYER_UP_SPRITE_NUM, PLAYER_SIZE, PLAYER_UP_PATH));
+	std::shared_ptr<Sprite> down(new Sprite(PLAYER_DOWN_SPRITE_NUM, PLAYER_SIZE, PLAYER_DOWN_PATH));
 
 	// Load into vector
 	sprites.push_back(left);

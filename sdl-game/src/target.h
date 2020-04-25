@@ -10,7 +10,7 @@ public:
 	~Target();
 
 	void update(SDL_Renderer* renderer);
-	void hit();
+	void hit(SDL_Renderer* renderer);
 	bool isDead();
 
 

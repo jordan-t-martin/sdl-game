@@ -19,6 +19,7 @@ public:
 
 	int inline getScore() { return _score; }
 	void inline setScore(int score) { _score = score; }
+	bool inline scoreChanged() { return _score_change; }
 
 private:
 	std::map<int, std::pair<int, int>> setupLocations();
@@ -26,8 +27,8 @@ private:
 	void createProjectile(SDL_Renderer* renderer, int w, int h, int end_x, int end_y, std::shared_ptr<Player> player);
 	
 	int _mouse_x = 0, _mouse_y = 0;
-	int _cooldown = 0, _score = 0;
-	bool _mouse_down = false;
+	int _cooldown = 0, _score = 0, _prev_score = 0;
+	bool _mouse_down = false, _score_change = false;
 	std::map<int, std::pair<int, int>> _locations;
 	std::vector<std::shared_ptr<Target>> _targets;
 	std::vector<std::shared_ptr<Bullet>> _bullets;

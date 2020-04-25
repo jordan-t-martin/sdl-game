@@ -76,6 +76,9 @@ void Player::draw(SDL_Renderer* renderer) {
 	// Switch texture to correct direction
 	_texture = _textures.at(_dir);
 
+	if (_dir != _prev_dir)
+		_frame = 0;
+
 	// If character is walking...
 	if (_walking) {
 		// Increment animation frame
@@ -96,6 +99,8 @@ void Player::draw(SDL_Renderer* renderer) {
 		// Pass in clip to render only portion of texture onto rect
 		SDL_RenderCopy(renderer, _texture, &_sprites.at(_dir)->getSpriteClips()[_frame/_anim_speed], &rect);
 	}
+
+	_prev_dir = _dir;
 }
 
 // Make updates to player every tick
@@ -112,36 +117,34 @@ void Player::update() {
 	if (keystate[SDL_SCANCODE_A]) { // [A] key
 		_walking = true;
 		_dir = left;
-		_frame = 0;
+		//_frame = 0;
 		_x -= 3;
 	}
 	if (keystate[SDL_SCANCODE_D]) { // [D] key
 		_walking = true;
 		_dir = right;
-		_frame = 0;
+		//_frame = 0;
 		_x += 3;
 	}
 	if (keystate[SDL_SCANCODE_W]) { // [W] key
 		_walking = true;
 		_dir = up;
-		_frame = 0;
+		//_frame = 0;
 		_y -= 3;
 	}
 	if (keystate[SDL_SCANCODE_S]) { // [S] key
 		_walking = true;
 		_dir = down;
-		_frame = 0;
+		//_frame = 0;
 		_y += 3;
 	}
 }
 
 // Check if an event has happened every tick
 void Player::pollEvents(SDL_Event& event) {
-	// If a key is pressed down
 	if (event.type == SDL_KEYDOWN) {
 
 	}
-	// If a key is released
 	if (event.type == SDL_KEYUP) {
 		switch (event.key.keysym.sym) {
 		// For WASD keys, set walking state to false when key is released

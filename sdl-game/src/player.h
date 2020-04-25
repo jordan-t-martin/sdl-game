@@ -27,6 +27,7 @@ private:
 
 	int _frame = 0;
 	int _dir = down;
+	int _prev_dir = down;
 	int _anim_speed = 5;
 	bool _walking = false; 
 	std::vector<SDL_Texture*> _textures;

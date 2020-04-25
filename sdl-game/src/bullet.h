@@ -23,6 +23,8 @@ class Bullet : public Rect
 		enum direction{down, right_down, left_up, left_down, left, right_up, right, up };
 		std::vector<std::shared_ptr<Sprite>> _sprites;
 		SDL_Texture* _texture = nullptr;
-		Vector2 v, _direction, position;
-		Vector2 start = Vector2(_start_x, _start_y), end = Vector2(_end_x, _end_y);
+		Vector2 v, _direction, _position;
+		Vector2* _start_v;
+		Vector2* _end_v;
+		Vector2 test;
 };

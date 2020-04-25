@@ -14,5 +14,11 @@ public:
 	float dot_product(Vector2 a, Vector2 b);
 	Vector2 normalize(Vector2 a);
 
-	float _x, _y;
+	int inline getX() { return _x; }
+	int inline getY() { return _y; }
+	void inline setX(int x) { _x = x; }
+	void inline setY(int y) { _y = y; }
+
+private:
+	float _x, _y = 0;
 };

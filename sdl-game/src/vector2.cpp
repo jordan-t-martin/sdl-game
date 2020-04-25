@@ -32,7 +32,7 @@ Vector2 Vector2::multiply_scalar(float scalar, Vector2 vec) {
 }
 
 float Vector2::length(Vector2 a) {
-	return sqrt((a._x * a._x) + (a._y * a._y));
+	return sqrtf((a._x * a._x) + (a._y * a._y));
 }
 
 float Vector2::distance(Vector2 a, Vector2 b) {
@@ -48,4 +48,3 @@ Vector2 Vector2::normalize(Vector2 a) {
 	float y = a._y / length(a);
 	return Vector2(x, y);
 }
-

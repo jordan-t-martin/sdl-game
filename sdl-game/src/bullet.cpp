@@ -8,23 +8,24 @@ Bullet::Bullet(SDL_Renderer* renderer, int w, int h, float start_x, float start_
 	: Rect(renderer, w, h, (int) start_x, (int) start_y, sprites.at(0)->getTexturePath()), 
 	_start_x(start_x), _start_y(start_y), _end_x(end_x), _end_y(end_y), _range(range), _speed(speed), _distance(distance), _sprites(sprites)
 {
-	
+	_start_v = new Vector2(_start_x, _start_y);
+	_end_v = new Vector2(_end_x, _end_y);
+
 	_speed = 1500;
 	_elapsed = 0.01f;
-	distance = v.distance(start, end);
-	_direction = v.normalize(v.subtract(end, start));
+	_distance = v.distance(*_start_v, *_end_v);
+	_direction = v.normalize(v.subtract(*_end_v, *_start_v));
 
-	
 
-	_x = (int) start._x;
-	_y = (int) start._y;
+	_x = (int) _start_v->getX();
+	_y = (int) _start_v->getY();
 
 	_moving = true;
 
-	_angle = (float) acos(v.dot_product(_direction, Vector2(1, 0))) * 180 / M_PI;
+	_angle = acosf(v.dot_product(_direction, Vector2(1, 0))) * 180 / M_PI;
 
 
-	position = Vector2(_x, _y);
+	_position = Vector2(_x, _y);
 	// Create surface from image using file path
 	auto surface = IMG_Load(_sprites.at(0)->getTexturePath().c_str());
 
@@ -110,9 +111,9 @@ void Bullet::update() {
 	
 	if (_moving == true)
 	{
-		position = v.add(position, v.multiply_scalar((_speed * _elapsed), _direction));
+		_position = v.add(_position, v.multiply_scalar((_speed * _elapsed), _direction));
 	}
 	
-	_x = position._x;
-	_y = position._y;
+	_x = _position.getX();
+	_y = _position.getY();
 }

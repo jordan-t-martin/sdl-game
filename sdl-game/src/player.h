@@ -3,6 +3,7 @@
 #include "sprite.h"
 #include <vector>
 #include <iostream>
+#include <math.h>
 
 class Player : public Rect {
 public:	

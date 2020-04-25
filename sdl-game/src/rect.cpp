@@ -1,5 +1,4 @@
 #include "rect.h"
-#include <iostream>
 
 // Constructor for color texture
 Rect::Rect(SDL_Renderer *renderer, int w, int h, int x, int y, int r, int g, int b, int a) :

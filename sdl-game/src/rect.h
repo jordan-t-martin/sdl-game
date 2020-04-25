@@ -1,7 +1,7 @@
 #pragma once
-
 #include <SDL_image.h>
 #include <string>
+#include <iostream>
 
 class Rect {
 public:

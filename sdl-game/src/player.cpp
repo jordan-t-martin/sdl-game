@@ -1,6 +1,4 @@
 #include "player.h"
-#include <iostream>
-#include <math.h>
 
 // Use color contructor because multiple sprites are passed in to process textures
 Player::Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g, int b, int a)

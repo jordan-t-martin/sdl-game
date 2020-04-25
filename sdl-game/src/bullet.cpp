@@ -1,31 +1,23 @@
 #include "bullet.h"
-#include <iostream>
 
 #define PI 3.14159265
 
 // take distance out
-Bullet::Bullet(SDL_Renderer* renderer, int w, int h, float start_x, float start_y, float end_x, float end_y, int range, int speed, int distance, std::vector<std::shared_ptr<Sprite>> sprites)
+Bullet::Bullet(SDL_Renderer* renderer, int w, int h, float start_x, float start_y, float end_x, float end_y, std::vector<std::shared_ptr<Sprite>> sprites)
 	: Rect(renderer, w, h, (int) start_x, (int) start_y, sprites.at(0)->getTexturePath()), 
-	_start_x(start_x), _start_y(start_y), _end_x(end_x), _end_y(end_y), _range(range), _speed(speed), _distance(distance), _sprites(sprites)
+	_start_x(start_x), _start_y(start_y), _end_x(end_x), _end_y(end_y), _sprites(sprites)
 {
-	_start_v = new Vector2(_start_x, _start_y);
-	_end_v = new Vector2(_end_x, _end_y);
+	// Setup
+	_start_v = Vector2(_start_x, _start_y);
+	_end_v = Vector2(_end_x, _end_y);
+	_position_v = Vector2(_x, _y);
+	_unit_v = _v.normalize(_v.subtract(_end_v, _start_v));
 
-	_speed = 1500;
-	_elapsed = 0.01f;
-	_distance = v.distance(*_start_v, *_end_v);
-	_direction = v.normalize(v.subtract(*_end_v, *_start_v));
+	// Find angle of unit vector
+	Vector2 horz_unit_v = Vector2(1, 0);
+	float degrees = (180 / M_PI);
+	_angle = acosf(_v.dot_product(_unit_v, horz_unit_v)) * degrees;
 
-
-	_x = (int) _start_v->getX();
-	_y = (int) _start_v->getY();
-
-	_moving = true;
-
-	_angle = acosf(v.dot_product(_direction, Vector2(1, 0))) * 180 / M_PI;
-
-
-	_position = Vector2(_x, _y);
 	// Create surface from image using file path
 	auto surface = IMG_Load(_sprites.at(0)->getTexturePath().c_str());
 
@@ -50,54 +42,22 @@ Bullet::~Bullet() {
 
 }
 
-int Bullet::findDirection() {
-	if (_angle < 15) {
-		return right;
-	}
 
-	if (_angle > 15 && _angle < 75) {
-		if (_start_y > _end_y) {
-			return right_up;
-		}
-		else {
-			return right_down;
-		}
-	}
-	if (_angle > 75 && _angle < 105) {
-		if (_start_y > _end_y) {
-			return up;
-		}
-		else {
-			return down;
-		}
-	}
-
-	if (_angle > 105 && _angle < 165) {
-		if (_start_y > _end_y) {
-			return left_up;
-		}
-		else {
-			return left_down;
-		}
-	}
-
-	if (_angle > 165) {
-		return left;
-	}
-}
 
 void Bullet::draw(SDL_Renderer* renderer) {
 	// Create rectangle using position and dimensions
 	SDL_Rect myrect = { _x, _y, _w, _h };
 
+	// Index from 8 Directional
 	_index = findDirection();
 
+	// Check that clips exists
 	if (_sprites.at(0)->getSpriteClips() == nullptr) {
 		std::cerr << "Clips are empty.\n";
 		return;
 	}
 
-	// Set the rectangle to be the size of the sprite
+	// Set the rectangle to be the size of the sprite using clips
 	myrect.w = _sprites.at(0)->getSpriteClips()[_index].w;
 	myrect.h = _sprites.at(0)->getSpriteClips()[_index].h;
 
@@ -108,12 +68,44 @@ void Bullet::draw(SDL_Renderer* renderer) {
 }
 
 void Bullet::update() {
+	// Add how much position has moved at speed in elapsed time (game tick) in unit vector's direction
+	_position_v = _v.add(_position_v, _v.multiply_scalar((_speed * _elapsed), _unit_v));
 	
-	if (_moving == true)
-	{
-		_position = v.add(_position, v.multiply_scalar((_speed * _elapsed), _direction));
+	// Update x/y coords with position vector
+	_x = _position_v.getX();
+	_y = _position_v.getY();
+}
+
+// Convert 360 degree angle to 8 directional for bullet sprite
+int Bullet::findDirection() {
+
+// Using arc cos to determine direction, angle gives only positive results.
+// Need to determine if angle is positive or negative by comparing start and end Y-coordinate
+
+	if (_angle < 15) 
+		return right;
+
+	if (_angle > 15 && _angle < 75) {
+		if (_start_y > _end_y)
+			return right_up;
+		else 
+			return right_down;
 	}
-	
-	_x = _position.getX();
-	_y = _position.getY();
+
+	if (_angle > 75 && _angle < 105) {
+		if (_start_y > _end_y)
+			return up;
+		else 
+			return down;
+	}
+
+	if (_angle > 105 && _angle < 165) {
+		if (_start_y > _end_y)
+			return left_up;
+		else
+			return left_down;
+	}
+
+	if (_angle > 165) 
+		return left;
 }

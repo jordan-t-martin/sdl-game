@@ -95,7 +95,7 @@ void Projectile::createProjectile(SDL_Renderer* renderer, int w, int h, int end_
 	std::vector<std::shared_ptr<Sprite>> sprites;
 	std::shared_ptr<Sprite> sprite(new Sprite(8, 12, "assets/sprite-sheets/bullet.png"));
 	sprites.push_back(sprite);
-	std::shared_ptr<Bullet> b(new Bullet(renderer, w, h, start_x, start_y, end_x, end_y, range, speed, distance, sprites));
+	std::shared_ptr<Bullet> b(new Bullet(renderer, w, h, start_x, start_y, end_x, end_y, sprites));
 	_bullets.push_back(b);
 }
 

@@ -1,6 +1,4 @@
 #include "text.h"
-#include "window.h"
-#include <iostream>
 
 Text::Text(SDL_Renderer *renderer, const std::string &font_path, int font_size, const std::string &message_text, const SDL_Color &color, int x, int y) : _x(x), _y(y)
 {

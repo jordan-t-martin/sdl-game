@@ -5,8 +5,11 @@ Projectile::Projectile(SDL_Renderer* renderer)
 	// Get screen dimensions for out of bounds check
 	SDL_GetRendererOutputSize(renderer, &screen_width, &screen_height);
 
-	_locations = setupLocations();
+	_target_locations = setupTargetLocations();
+	_obst_locations = setupObstLocations();
+
 	_targets = createTargets(renderer);
+	_obstacles = createObstacles(renderer);
 }
 
 Projectile::~Projectile() {
@@ -16,6 +19,9 @@ Projectile::~Projectile() {
 void Projectile::draw(SDL_Renderer* renderer) {
 	for (size_t i = 0; i < _targets.size(); i++) 
 		_targets.at(i)->draw(renderer);
+
+	for (size_t i = 0; i < _obstacles.size(); i++)
+		_obstacles.at(i)->draw(renderer);
 
 	for (size_t i = 0; i < _bullets.size(); i++) {
 		_bullets.at(i)->draw(renderer);
@@ -53,15 +59,28 @@ void Projectile::update(SDL_Renderer* renderer, std::shared_ptr<Player> player) 
 			continue;
 		}
 
-		// Hit a target
-		for (size_t j = 0; j < _targets.size(); j++) {
-			std::shared_ptr<Target> t = _targets.at(j);
-			if (b.get()->colliding(t.get())) {
+		// Hit an obstacle
+		for (size_t j = 0; j < _obstacles.size(); j++) {
+			std::shared_ptr<Rect> o = _obstacles.at(j);
+			if (b.get()->colliding(o.get())) {
 				_bullets.erase(_bullets.begin() + i);
-				t->hit(renderer);
-				if (t->isDead()) {
-					_targets.erase(_targets.begin() + j);
-					_score += 10;
+				b = nullptr;
+				break;
+			}
+		}
+
+		// Hit a target
+		if (b != nullptr) {
+			for (size_t j = 0; j < _targets.size(); j++) {
+				std::shared_ptr<Target> t = _targets.at(j);
+				if (b.get()->colliding(t.get())) {
+					_bullets.erase(_bullets.begin() + i);
+					t->hit(renderer);
+					if (t->isDead()) {
+						_targets.erase(_targets.begin() + j);
+						_score += 10;
+					}
+					break;
 				}
 			}
 		}
@@ -111,22 +130,64 @@ void Projectile::createProjectile(SDL_Renderer* renderer, int w, int h, int end_
 	_bullets.push_back(b);
 }
 
-std::map<int, points> Projectile::setupLocations() {
+std::map<int, points> Projectile::setupTargetLocations() {
 	std::map<int, points> locations;
-	for (int i = 0; i < 5; i++) {
-		points p;
-		p.point1 = std::make_pair((i * 100), 200);
-		p.point2 = std::make_pair((i * 100), 400);
-		locations[i] = p;
-	}
+	points p;
+
+	p.point1 = std::make_pair(0, 30);
+	p.point2 = std::make_pair(700, 30);
+	locations[0] = p;
+
+	p.point1 = std::make_pair(0, 100);
+	p.point2 = std::make_pair(0, 200);
+	locations[1] = p;
+
+	p.point1 = std::make_pair(100, 100);
+	p.point2 = std::make_pair(100, 200);
+	locations[2] = p;
+
+	p.point1 = std::make_pair(200, 130);
+	p.point2 = std::make_pair(570, 130);
+	locations[3] = p;
+
+	p.point1 = std::make_pair(200, 230);
+	p.point2 = std::make_pair(570, 230);
+	locations[4] = p;
+
+	p.point1 = std::make_pair(650, 100);
+	p.point2 = std::make_pair(650, 200);
+	locations[5] = p;
+
+	p.point1 = std::make_pair(750, 100);
+	p.point2 = std::make_pair(750, 200);
+	locations[6] = p;
+	return locations;
+}
+
+std::map<int, std::pair<int, int>> Projectile::setupObstLocations() {
+	std::map<int, std::pair<int, int> > locations;
+	locations[0] = std::make_pair(50, 300);
+	locations[1] = std::make_pair(300, 400);
+	locations[2] = std::make_pair(550, 250);
+	locations[3] = std::make_pair(100, 400);
+	locations[4] = std::make_pair(600, 375);
 	return locations;
 }
 
 std::vector<std::shared_ptr<Target>> Projectile::createTargets(SDL_Renderer* renderer) {
 	std::vector<std::shared_ptr<Target>> targets;
-	for (size_t i = 0; i < _locations.size(); i++) {
-		std::shared_ptr<Target> target(new Target(renderer, 56, 56, _locations[i].point1.first, _locations[i].point1.second, _locations[i].point2.first, _locations[i].point2.second, "assets/textures/target.png"));
+	for (size_t i = 0; i < _target_locations.size(); i++) {
+		std::shared_ptr<Target> target(new Target(renderer, 56, 56, _target_locations[i].point1.first, _target_locations[i].point1.second, _target_locations[i].point2.first, _target_locations[i].point2.second, "assets/textures/target.png"));
 		targets.push_back(target);
 	}
 	return targets;
+}
+
+std::vector<std::shared_ptr<Rect>> Projectile::createObstacles(SDL_Renderer* renderer) {
+	std::vector<std::shared_ptr<Rect>> obstacles;
+	for (size_t i = 0; i < _obst_locations.size(); i++) {
+		std::shared_ptr<Rect> obstacle(new Rect(renderer, 90, 63, _obst_locations[i].first, _obst_locations[i].second, "assets/textures/rock.png"));
+		obstacles.push_back(obstacle);
+	}
+	return obstacles;
 }

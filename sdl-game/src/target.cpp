@@ -36,7 +36,7 @@ void Target::update() {
 	_x = (int)_position_v.getX();
 	_y = (int)_position_v.getY();
 	_health_text->setX(_x + 5);
-	_health_text->setY(_y - 50);
+	_health_text->setY(_y - 30);
 }
 
 void Target::draw(SDL_Renderer* renderer) {

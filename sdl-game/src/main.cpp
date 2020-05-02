@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
 		// Text 
 		title.draw(Window::renderer);
 		if(projectiles.getScore() != prev_score)
-			score.reloadTexture(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles.getScore()), { 255, 0, 0 , 255 });
+			score.reloadTexture(Window::renderer, "Score: " + std::to_string(projectiles.getScore()), { 255, 0, 0 , 255 });
 		score.draw(Window::renderer);
 		
 		// Cursor image

@@ -12,11 +12,12 @@ Target::~Target() {
 
 void Target::update(SDL_Renderer* renderer) {
 	health_text->draw(renderer);
+
 }
 
 void Target::hit(SDL_Renderer* renderer) {
 	health -= 10;
-	health_text->reloadTexture(renderer, FONT_PATH, FONT_SIZE, std::to_string(health), green);
+	health_text->reloadTexture(renderer, std::to_string(health), green);
 }
 
 bool Target::isDead() {

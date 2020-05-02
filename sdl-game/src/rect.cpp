@@ -9,7 +9,7 @@ Rect::Rect(SDL_Renderer *renderer, int w, int h, int x, int y, int r, int g, int
 
 // Constructor for image texture
 Rect::Rect(SDL_Renderer *renderer, int w, int h, int x, int y, const std::string& image_path) :
-	_w(w), _h(h), _x(x), _y(y)
+	_w(w), _h(h), _x(x), _y(y), _r(0), _g(0), _b(0), _a(0)
 {
 	// Create surface from image using file path
 	auto surface = IMG_Load(image_path.c_str());

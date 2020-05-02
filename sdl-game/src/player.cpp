@@ -214,7 +214,7 @@ void Player::shoot(int diff_x, int diff_y) {
 bool Player::outOfBounds(int x, int y) {
 	return (
 		x < 0 || 
-		y < 0 ||
+		y < screen_height - 200 ||
 		x + _w > screen_width ||
 		y + _h > screen_height
 	);

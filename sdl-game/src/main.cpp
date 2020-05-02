@@ -36,7 +36,9 @@ int main(int argc, char** argv) {
 	std::shared_ptr<Rect> cursor(new Rect(Window::renderer, 64, 64, 0, 0, "assets/textures/reticle_sprite.png"));
 
 	// Still objects
-	Rect rect(Window::renderer, 840, 320, 0, 0, "assets/textures/wood.png");
+	Rect wall(Window::renderer, 840, 320, 0, 0, "assets/textures/wood.png");
+	Rect dirt(Window::renderer, 840, 120, 0, 320, 101, 67, 33, 80);
+	Rect grass(Window::renderer, 840, 200, 0, 440, 0, 120, 0, 100);
 
 	// Player character
 	std::shared_ptr<Player> player(new Player(Window::renderer, 64, 64, 500, 500, 0, 0, 0, 0));
@@ -56,7 +58,9 @@ int main(int argc, char** argv) {
 		pollEvents(window, *player, projectiles);
 
 		// Still objects
-		rect.draw(Window::renderer);
+		wall.draw(Window::renderer);
+		grass.draw(Window::renderer);
+		dirt.draw(Window::renderer);
 
 		// Player character
 		player->update();

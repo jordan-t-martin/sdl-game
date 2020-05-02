@@ -167,10 +167,10 @@ std::map<int, points> Projectile::setupTargetLocations() {
 std::map<int, std::pair<int, int>> Projectile::setupObstLocations() {
 	std::map<int, std::pair<int, int> > locations;
 	locations[0] = std::make_pair(50, 300);
-	locations[1] = std::make_pair(300, 400);
-	locations[2] = std::make_pair(550, 250);
-	locations[3] = std::make_pair(100, 400);
-	locations[4] = std::make_pair(600, 375);
+	locations[1] = std::make_pair(375, 350);
+	locations[2] = std::make_pair(550, 300);
+	locations[3] = std::make_pair(200, 350);
+	locations[4] = std::make_pair(700, 325);
 	return locations;
 }
 

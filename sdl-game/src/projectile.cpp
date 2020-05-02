@@ -111,10 +111,13 @@ void Projectile::createProjectile(SDL_Renderer* renderer, int w, int h, int end_
 	_bullets.push_back(b);
 }
 
-std::map<int, std::pair<int, int>> Projectile::setupLocations() {
-	std::map<int, std::pair<int, int>> locations;
+std::map<int, points> Projectile::setupLocations() {
+	std::map<int, points> locations;
 	for (int i = 0; i < 5; i++) {
-		locations[i] = std::make_pair((i * 100), 200);
+		points p;
+		p.point1 = std::make_pair((i * 100), 200);
+		p.point2 = std::make_pair((i * 100), 400);
+		locations[i] = p;
 	}
 	return locations;
 }
@@ -122,7 +125,7 @@ std::map<int, std::pair<int, int>> Projectile::setupLocations() {
 std::vector<std::shared_ptr<Target>> Projectile::createTargets(SDL_Renderer* renderer) {
 	std::vector<std::shared_ptr<Target>> targets;
 	for (size_t i = 0; i < _locations.size(); i++) {
-		std::shared_ptr<Target> target(new Target(renderer, 56, 56, _locations[i].first, _locations[i].second, "assets/textures/target.png"));
+		std::shared_ptr<Target> target(new Target(renderer, 56, 56, _locations[i].point1.first, _locations[i].point1.second, _locations[i].point2.first, _locations[i].point2.second, "assets/textures/target.png"));
 		targets.push_back(target);
 	}
 	return targets;

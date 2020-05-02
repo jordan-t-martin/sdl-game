@@ -14,8 +14,8 @@ class Bullet : public Rect
 		~Bullet();
 
 		
-		void draw(SDL_Renderer* renderer);
 		void update();
+		void draw(SDL_Renderer* renderer);
 		
 		enum direction{down, right_down, left_up, left_down, left, right_up, right, up };
 

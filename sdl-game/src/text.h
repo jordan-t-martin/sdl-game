@@ -13,6 +13,9 @@ public:
 	void reloadTexture(SDL_Renderer* renderer, const std::string& message_text, const SDL_Color& color);
 	SDL_Texture* loadTexture(SDL_Renderer* renderer, const std::string &message_text, const SDL_Color &color);
 
+	void inline setX(int x) { _x = x; }
+	void inline setY(int y) { _y = y; }
+
 private:
 	int _x, _y;
 	TTF_Font* _font;

@@ -1,12 +1,13 @@
 #pragma once
 #include "rect.h"
 #include "text.h"
+#include "vector2.h"
 #include <map>
 
 
 class Target : public Rect {
 public:
-	Target(SDL_Renderer* renderer, int w, int h, int x, int y, const std::string& image_path);
+	Target(SDL_Renderer* renderer, int w, int h, float start_x, float start_y, float end_x, float end_y, const std::string& image_path);
 	~Target();
 
 	void update();
@@ -16,8 +17,15 @@ public:
 
 
 private:
-	int health = 100;
-	Text* health_text;
+
+	void swapPoints();
+	int _health = 100;
+	Text* _health_text;
+
+	bool _moving;
+	float _start_x, _start_y, _end_x, _end_y;
+	float _speed = 250, _elapsed = 0.01f, _distance;
+	Vector2  _v, _start_v, _end_v, _unit_v, _position_v;
 
 	// Constants for text
 	const std::string FONT_PATH = "assets/consola.ttf";

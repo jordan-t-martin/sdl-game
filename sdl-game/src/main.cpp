@@ -15,13 +15,20 @@ const int SCREEN_WIDTH = 840;
 const int SCREEN_HEIGHT = 640;
 
 // Poll all events in each object
-void pollEvents(Window& window, Player& player, Projectile& projectiles) {
+void pollEvents(Window& window, Player& player, Projectile& projectiles, Timer& timer) {
 	SDL_Event event;
 
 	if (SDL_PollEvent(&event)){
 		player.pollEvents(event);
 		projectiles.pollEvents(event);
 		window.pollEvents(event);
+	}
+	if (event.type == SDL_KEYDOWN) {
+		switch (event.key.keysym.sym) {
+		// Pause
+		case SDLK_p: // [P] key
+			timer.pause();
+		}
 	}
 }
 
@@ -55,7 +62,7 @@ int main(int argc, char** argv) {
 
 	// Game loop, stops if window is closed
 	while (!window.isClosed()) {
-		pollEvents(window, *player, projectiles);
+		pollEvents(window, *player, projectiles, timer);
 
 		// Still objects
 		wall.draw(Window::renderer);

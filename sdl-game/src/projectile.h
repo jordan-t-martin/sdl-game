@@ -16,10 +16,10 @@ public:
 	void update(SDL_Renderer* renderer, std::shared_ptr<Player> player);
 	void draw(SDL_Renderer* renderer);
 	void pollEvents(SDL_Event& event);
+	bool win();
 
 	int inline getScore() { return _score; }
 	void inline setScore(int score) { _score = score; }
-	bool inline scoreChanged() { return _score_change; }
 
 private:
 	std::map<int, std::pair<int, int>> setupLocations();
@@ -29,7 +29,7 @@ private:
 	int screen_width, screen_height;
 	int _mouse_x = 0, _mouse_y = 0;
 	int _cooldown = 0, _score = 0, _prev_score = 0;
-	bool _mouse_down = false, _score_change = false;
+	bool _mouse_down = false;
 	std::map<int, std::pair<int, int>> _locations;
 	std::vector<std::shared_ptr<Target>> _targets;
 	std::vector<std::shared_ptr<Bullet>> _bullets;

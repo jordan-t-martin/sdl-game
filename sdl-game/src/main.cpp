@@ -47,7 +47,6 @@ int main(int argc, char** argv) {
 	// Text
 	Text title(Window::renderer, "assets/consolab.ttf", 30, "Target Practice!", { 255, 0, 0 , 255 }, 20, 20);
 	Text score(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles.getScore()), { 255, 0, 0 , 255 }, 20, 80);
-	int prev_score = 0;
 
 	// Timer
 	Timer timer(Window::renderer);
@@ -66,11 +65,12 @@ int main(int argc, char** argv) {
 		// Targets and bullets
 		projectiles.update(Window::renderer, player);
 		projectiles.draw(Window::renderer);
+		if (projectiles.win())
+			break;
 
 		// Text 
 		title.draw(Window::renderer);
-		if(projectiles.getScore() != prev_score)
-			score.reloadTexture(Window::renderer, "Score: " + std::to_string(projectiles.getScore()), { 255, 0, 0 , 255 });
+		score.reloadTexture(Window::renderer, "Score: " + std::to_string(projectiles.getScore()), { 255, 0, 0 , 255 });
 		score.draw(Window::renderer);
 		
 		// Timer
@@ -83,8 +83,6 @@ int main(int argc, char** argv) {
 
 		// Update screen with all draws
 		window.clear();
-
-		prev_score = projectiles.getScore();
 	}
 
 	// Successful exit

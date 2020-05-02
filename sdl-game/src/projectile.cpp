@@ -66,13 +66,10 @@ void Projectile::update(SDL_Renderer* renderer, std::shared_ptr<Player> player) 
 			}
 		}
 	}
-	
-	if (_prev_score != _score)
-		_score_change = true;
-	else
-		_score_change = false;
+}
 
-	_prev_score = _score;
+bool Projectile::win() {
+	return (_targets.size() == 0);
 }
 
 void Projectile::pollEvents(SDL_Event& event) {

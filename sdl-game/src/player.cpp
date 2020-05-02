@@ -4,6 +4,9 @@
 Player::Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g, int b, int a)
 	: Rect(renderer, w, h, x, y, r, g, b, a)
 {
+	// Get screen dimensions for out of bounds check
+	SDL_GetRendererOutputSize(renderer, &screen_width, &screen_height);
+
 	// Self create sprites
 	_sprites = createSprites();
 	
@@ -118,25 +121,29 @@ void Player::update() {
 		_walking = true;
 		_dir = left;
 		//_frame = 0;
-		_x -= 3;
+		if(!outOfBounds(_x - 3, _y))
+			_x -= 3;
 	}
 	if (keystate[SDL_SCANCODE_D]) { // [D] key
 		_walking = true;
 		_dir = right;
 		//_frame = 0;
-		_x += 3;
+		if (!outOfBounds(_x + 3, _y))
+			_x += 3;
 	}
 	if (keystate[SDL_SCANCODE_W]) { // [W] key
 		_walking = true;
 		_dir = up;
 		//_frame = 0;
-		_y -= 3;
+		if (!outOfBounds(_x, _y - 3))
+			_y -= 3;
 	}
 	if (keystate[SDL_SCANCODE_S]) { // [S] key
 		_walking = true;
 		_dir = down;
 		//_frame = 0;
-		_y += 3;
+		if (!outOfBounds(_x, _y + 3))
+			_y += 3;
 	}
 }
 
@@ -204,3 +211,11 @@ void Player::shoot(int diff_x, int diff_y) {
 	}
 }
 
+bool Player::outOfBounds(int x, int y) {
+	return (
+		x < 0 || 
+		y < 0 ||
+		x + _w > screen_width ||
+		y + _h > screen_height
+	);
+}

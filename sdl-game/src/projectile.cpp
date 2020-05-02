@@ -2,6 +2,9 @@
 
 Projectile::Projectile(SDL_Renderer* renderer)
 {
+	// Get screen dimensions for out of bounds check
+	SDL_GetRendererOutputSize(renderer, &screen_width, &screen_height);
+
 	_locations = setupLocations();
 	_targets = createTargets(renderer);
 }
@@ -39,10 +42,6 @@ void Projectile::update(SDL_Renderer* renderer, std::shared_ptr<Player> player) 
 	for (size_t i = 0; i < _bullets.size(); i++) {
 		_bullets.at(i)->update();
 	}
-
-	// Get screen dimensions for out of bounds check
-	int screen_width, screen_height;
-	SDL_GetRendererOutputSize(renderer, &screen_width, &screen_height);
 
 	// Check collisions for bullets
 	for (size_t i = 0; i < _bullets.size(); i++) {

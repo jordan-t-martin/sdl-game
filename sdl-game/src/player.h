@@ -14,7 +14,8 @@ public:
 	void update();
 	void pollEvents(SDL_Event& event);
 	void shoot(int diff_x, int diff_y);
-	
+	bool outOfBounds(int x, int y);
+
 	int inline getDir() { return _dir; }
 	bool inline getWalking() { return _walking; }
 	void inline setDir(int dir) { _dir = dir; }
@@ -24,7 +25,8 @@ public:
 
 private:
 	std::vector<std::shared_ptr<Sprite>> createSprites();
-
+	
+	int screen_width, screen_height;
 	int _frame = 0;
 	int _dir = down;
 	int _prev_dir = down;

@@ -33,7 +33,7 @@ void Projectile::update(SDL_Renderer* renderer, std::shared_ptr<Player> player) 
 
 	// Update all bullets and targets
 	for (size_t i = 0; i < _targets.size(); i++) {
-		_targets.at(i)->update(renderer);
+		_targets.at(i)->update();
 	}
 
 	for (size_t i = 0; i < _bullets.size(); i++) {

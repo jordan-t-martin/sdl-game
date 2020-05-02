@@ -5,6 +5,7 @@
 #include "text.h"
 #include "sprite.h"
 #include "target.h"
+#include "timer.h"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -45,8 +46,11 @@ int main(int argc, char** argv) {
 
 	// Text
 	Text title(Window::renderer, "assets/consolab.ttf", 30, "Target Practice!", { 255, 0, 0 , 255 }, 20, 20);
-	Text score(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles.getScore()), { 255, 0, 0 , 255 }, 20, 50);
+	Text score(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles.getScore()), { 255, 0, 0 , 255 }, 20, 80);
 	int prev_score = 0;
+
+	// Timer
+	Timer timer(Window::renderer);
 
 	// Game loop, stops if window is closed
 	while (!window.isClosed()) {
@@ -69,6 +73,10 @@ int main(int argc, char** argv) {
 			score.reloadTexture(Window::renderer, "Score: " + std::to_string(projectiles.getScore()), { 255, 0, 0 , 255 });
 		score.draw(Window::renderer);
 		
+		// Timer
+		timer.update(Window::renderer);
+		timer.draw(Window::renderer);
+
 		// Cursor image
 		window.update(cursor);
 		cursor->draw(Window::renderer);

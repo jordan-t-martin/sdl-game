@@ -36,10 +36,10 @@ private:
 	std::vector<std::shared_ptr<Sprite>> _sprites;
 
 	// Constant values for sprite creation
-	const std::string PLAYER_LEFT_PATH = "assets/sprite-sheets/player_left.png";
-	const std::string PLAYER_RIGHT_PATH = "assets/sprite-sheets/player_right.png";
-	const std::string PLAYER_UP_PATH = "assets/sprite-sheets/player_up.png";
-	const std::string PLAYER_DOWN_PATH = "assets/sprite-sheets/player_down.png";
+	const std::string PLAYER_LEFT_PATH = "assets/sprite-sheets/player_left_gun.png";
+	const std::string PLAYER_RIGHT_PATH = "assets/sprite-sheets/player_right_gun.png";
+	const std::string PLAYER_UP_PATH = "assets/sprite-sheets/player_up_gun.png";
+	const std::string PLAYER_DOWN_PATH = "assets/sprite-sheets/player_down_gun.png";
 	const int PLAYER_SIZE = 74;
 	const int PLAYER_LEFT_SPRITE_NUM = 4;
 	const int PLAYER_RIGHT_SPRITE_NUM = 4;

@@ -7,6 +7,7 @@ class Rect {
 public:
 	Rect(SDL_Renderer *renderer, int w, int h, int x, int y, int r, int g, int b, int a);
 	Rect(SDL_Renderer *renderer, int w, int h, int x, int y, const std::string &image_path);
+
 	~Rect();
 
 	virtual void draw(SDL_Renderer* renderer) const;

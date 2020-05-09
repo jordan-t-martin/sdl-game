@@ -122,28 +122,28 @@ void Player::update() {
 		_dir = left;
 		//_frame = 0;
 		if(!outOfBounds(_x - 3, _y))
-			_x -= 3;
+			_x -= _player_speed;
 	}
 	if (keystate[SDL_SCANCODE_D]) { // [D] key
 		_walking = true;
 		_dir = right;
 		//_frame = 0;
 		if (!outOfBounds(_x + 3, _y))
-			_x += 3;
+			_x += _player_speed;
 	}
 	if (keystate[SDL_SCANCODE_W]) { // [W] key
 		_walking = true;
 		_dir = up;
 		//_frame = 0;
 		if (!outOfBounds(_x, _y - 3))
-			_y -= 3;
+			_y -= _player_speed;
 	}
 	if (keystate[SDL_SCANCODE_S]) { // [S] key
 		_walking = true;
 		_dir = down;
 		//_frame = 0;
 		if (!outOfBounds(_x, _y + 3))
-			_y += 3;
+			_y += _player_speed;
 	}
 }
 

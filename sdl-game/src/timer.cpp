@@ -2,13 +2,13 @@
 
 Timer::Timer(SDL_Renderer* renderer) {
 	//Initialize the variables
-	_text = new Text(renderer, FONT_PATH, FONT_SIZE, START_TEXT, RED, X_POS, Y_POS);
+	_text = new Text(renderer, FONT_PATH, FONT_SIZE, START_TEXT, WHITE, _x, _y);
 
 	mStartTicks = 0;
 	mPausedTicks = 0;
 
 	mPaused = false;
-	mStarted = true;
+	mStarted = false;
 }
 
 void Timer::start() {
@@ -104,7 +104,7 @@ void Timer::update(SDL_Renderer* renderer) {
 	timeText.str("");
 	timeText << "Timer: " << (int) (getTicks() / 1000.f);
 
-	_text->reloadTexture(renderer, timeText.str().c_str(), RED);
+	_text->reloadTexture(renderer, timeText.str().c_str(), WHITE);
 }
 
 void Timer::pollEvents(SDL_Event& event) {
@@ -128,4 +128,8 @@ void Timer::pollEvents(SDL_Event& event) {
 			}
 		}
 	}
+}
+
+void Timer::center() {
+	_text->center();
 }

@@ -33,6 +33,11 @@ public:
 	bool isStarted();
 	bool isPaused();
 
+	void center();
+
+	void inline setX(int x) { _x = x; _text->setX(_x); }
+	void inline setY(int y) { _y = y; _text->setY(_y); }
+
 private:
 	//The clock time when the timer started
 	Uint32 mStartTicks;
@@ -49,11 +54,12 @@ private:
 
 	Text* _text;
 
+	int _x = 20, _y = 50;
+
 	// Constants for text
-	const int X_POS = 20, Y_POS = 50;
 	const std::string FONT_PATH = "assets/consolab.ttf";
 	const int FONT_SIZE = 30;
-	const SDL_Color RED = { 255, 0, 0 , 255 }; 
+	const SDL_Color WHITE = { 255, 255, 255 , 255 };
 	const std::string START_TEXT = "Time: 0";
 
 };

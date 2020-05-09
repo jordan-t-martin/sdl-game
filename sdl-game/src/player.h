@@ -32,6 +32,7 @@ private:
 	int _prev_dir = down;
 	int _anim_speed = 5;
 	bool _walking = false; 
+	int _player_speed = 4;
 	std::vector<SDL_Texture*> _textures;
 	std::vector<std::shared_ptr<Sprite>> _sprites;
 

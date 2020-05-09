@@ -25,7 +25,7 @@ class Bullet : public Rect
 
 		int _index = 0;
 		float _start_x, _start_y, _end_x, _end_y;
-		float _angle, _speed = 1500, _elapsed = 0.01f;
+		float _angle, _speed = 2500, _elapsed = 0.01f;
 		Vector2  _v, _start_v, _end_v, _unit_v, _position_v;
 		SDL_Texture* _texture = nullptr;
 		std::vector<std::shared_ptr<Sprite>> _sprites;

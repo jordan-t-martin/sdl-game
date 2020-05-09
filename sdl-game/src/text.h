@@ -12,7 +12,12 @@ public:
 	void draw(SDL_Renderer* renderer) const;
 	void reloadTexture(SDL_Renderer* renderer, const std::string& message_text, const SDL_Color& color);
 	SDL_Texture* loadTexture(SDL_Renderer* renderer, const std::string &message_text, const SDL_Color &color);
+	void center();
 
+	int inline getX() { return _x; }
+	int inline getY() { return _y; }
+	int inline getW() { return _text_rect.w; }
+	int inline getH() { return _text_rect.h; }
 	void inline setX(int x) { _x = x; }
 	void inline setY(int y) { _y = y; }
 

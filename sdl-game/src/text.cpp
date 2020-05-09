@@ -80,3 +80,8 @@ SDL_Texture* Text::loadTexture(SDL_Renderer *renderer, const std::string &messag
 	// Return the texture
 	return text_texture;
 }
+
+void Text::center() {
+	_x = (_x - (_text_rect.w / 2));
+	_y = (_y - (_text_rect.h / 2));
+}

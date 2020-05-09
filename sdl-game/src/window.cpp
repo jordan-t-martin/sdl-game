@@ -89,6 +89,10 @@ void Window::pollEvents(SDL_Event &event) {
 	case SDL_QUIT:
 		_closed = true;
 		break;
+	case SDL_KEYDOWN:
+		if (event.key.keysym.sym == SDLK_ESCAPE)
+			_closed = true;
+		break;
 
 	default:
 		break;

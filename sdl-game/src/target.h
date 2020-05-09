@@ -19,7 +19,7 @@ public:
 private:
 
 	void swapPoints();
-	int _health = 100;
+	int _health = 50;
 	Text* _health_text;
 
 	bool _moving;

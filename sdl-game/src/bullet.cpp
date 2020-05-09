@@ -16,7 +16,7 @@ Bullet::Bullet(SDL_Renderer* renderer, int w, int h, float start_x, float start_
 	_position_v = Vector2((float) _x, (float) _y);
 	_unit_v = _v.normalize(_v.subtract(_end_v, _start_v));
 
-	// Find angle of unit vector
+	// Find angle of unit vector. This method only produces positive results.
 	Vector2 horz_unit_v = Vector2(1, 0);
 	float degrees = (180 / (float) M_PI);
 	_angle = acosf(_v.dot_product(_unit_v, horz_unit_v)) * degrees;
@@ -24,7 +24,6 @@ Bullet::Bullet(SDL_Renderer* renderer, int w, int h, float start_x, float start_
 	// Create surface from image using file path
 	auto surface = IMG_Load(_sprites.at(0)->getTexturePath().c_str());
 
-	// Check if surface was created successfully
 	if (!surface) {
 		std::cerr << "Failed to create surface.\n";
 	}
@@ -32,12 +31,11 @@ Bullet::Bullet(SDL_Renderer* renderer, int w, int h, float start_x, float start_
 	// Create texture from surface
 	_texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-	// Check if texture was created successfully
 	if (!_texture) {
 		std::cerr << "Failed to create texture.\n";
 	}
 
-	// Free surface memory
+	// Free memory
 	SDL_FreeSurface(surface);
 }
 
@@ -45,14 +43,29 @@ Bullet::~Bullet() {
 
 }
 
+// Create and return sprites using constant values from class
+std::vector<std::shared_ptr<Sprite>> Bullet::createSprites() {
+	std::vector<std::shared_ptr<Sprite>> sprites;
+
+	std::shared_ptr<Sprite> bullet(new Sprite(BULLET_SPRITE_NUM, BULLET_SPRITE_SIZE, BULLET_FILE_PATH));
+
+	sprites.push_back(bullet);
+
+	return sprites;
+}
+
 void Bullet::draw(SDL_Renderer* renderer) {
-	// Create rectangle using position and dimensions
+	// Create new rectangle using position and dimensions
 	SDL_Rect myrect = { _x, _y, _w, _h };
 
 	// Index from 8 Directional
 	_index = findDirection();
 
-	// Check that clips exists
+	if (_index == -1) {
+		std::cerr << "8 directional could not be found.\n";
+		return;
+	}
+
 	if (_sprites.at(0)->getSpriteClips() == nullptr) {
 		std::cerr << "Clips are empty.\n";
 		return;
@@ -62,8 +75,8 @@ void Bullet::draw(SDL_Renderer* renderer) {
 	myrect.w = _sprites.at(0)->getSpriteClips()[_index].w;
 	myrect.h = _sprites.at(0)->getSpriteClips()[_index].h;
 
-	// If texture exists, then copy texture to rectangle. 
 	if (_texture) {
+		// Pass in clip to render only portion of spritesheet texture onto object rectangle
 		SDL_RenderCopy(renderer, _texture, &_sprites.at(0)->getSpriteClips()[_index], &myrect);
 	}
 }
@@ -111,19 +124,4 @@ int Bullet::findDirection() {
 		return left;
 
 	else return -1;
-}
-
-// Create and return sprites using constant values from class
-std::vector<std::shared_ptr<Sprite>> Bullet::createSprites() {
-
-	// Vector to hold sprites
-	std::vector<std::shared_ptr<Sprite>> sprites;
-
-	// Create sprites from constants
-	std::shared_ptr<Sprite> bullet(new Sprite(BULLET_SPRITE_NUM, BULLET_SPRITE_SIZE, BULLET_FILE_PATH));
-
-	// Load into vector
-	sprites.push_back(bullet);
-
-	return sprites;
 }

@@ -1,80 +1,64 @@
 #include "timer.h"
 
 Timer::Timer(SDL_Renderer* renderer) {
-	//Initialize the variables
 	_text = new Text(renderer, FONT_PATH, FONT_SIZE, START_TEXT, WHITE, _x, _y);
 
-	mStartTicks = 0;
-	mPausedTicks = 0;
+	_start_ticks = 0;
+	_paused_ticks = 0;
 
-	mPaused = false;
-	mStarted = false;
+	_paused = false;
+	_started = false;
 }
 
 void Timer::start() {
-	//Start the timer
-	mStarted = true;
+	_started = true;
 
-	//Unpause the timer
-	mPaused = false;
+	_paused = false;
 
-	//Get the current clock time
-	mStartTicks = SDL_GetTicks();
-	mPausedTicks = 0;
+	// Get the current clock time
+	_start_ticks = SDL_GetTicks();
+	_paused_ticks = 0;
 }
 
 void Timer::stop() {
-	//Stop the timer
-	mStarted = false;
+	_started = false;
 
-	//Unpause the timer
-	mPaused = false;
+	_paused = false;
 
-	//Clear tick variables
-	mStartTicks = 0;
-	mPausedTicks = 0;
+	_start_ticks = 0;
+	_paused_ticks = 0;
 }
 
 void Timer::pause() {
-	//If the timer is running and isn't already paused
-	if (mStarted && !mPaused) {
-		//Pause the timer
-		mPaused = true;
+	// Timer must be running and not already paused
+	if (_started && !_paused) {
+		_paused = true;
 
-		//Calculate the paused ticks
-		mPausedTicks = SDL_GetTicks() - mStartTicks;
-		mStartTicks = 0;
+		_paused_ticks = SDL_GetTicks() - _start_ticks;
+		_start_ticks = 0;
 	}
 }
 
 void Timer::unpause() {
-	//If the timer is running and paused
-	if (mStarted && mPaused) {
-		//Unpause the timer
-		mPaused = false;
+	// Timer must be running and already paused
+	if (_started && _paused) {
+		_paused = false;
 
-		//Reset the starting ticks
-		mStartTicks = SDL_GetTicks() - mPausedTicks;
+		_start_ticks = SDL_GetTicks() - _paused_ticks;
 
-		//Reset the paused ticks
-		mPausedTicks = 0;
+		_paused_ticks = 0;
 	}
 }
 
 Uint32 Timer::getTicks() {
-	//The actual timer time
 	Uint32 time = 0;
 
-	//If the timer is running
-	if (mStarted) {
-		//If the timer is paused
-		if (mPaused) {
-			//Return the number of ticks when the timer was paused
-			time = mPausedTicks;
+	if (_started) {
+		if (_paused) {
+			time = _paused_ticks;
 		}
 		else {
-			//Return the current time minus the start time
-			time = (SDL_GetTicks() - mStartTicks);
+			time = (SDL_GetTicks() - _start_ticks);
 		}
 	}
 
@@ -82,17 +66,11 @@ Uint32 Timer::getTicks() {
 }
 
 bool Timer::isStarted() {
-	//Timer is running and paused or unpaused
-	return mStarted;
+	return _started;
 }
 
 bool Timer::isPaused() {
-	//Timer is running and paused
-	return mPaused && mStarted;
-}
-
-void Timer::loadMedia(SDL_Renderer* renderer, const std::string& message_text) {
-	
+	return _paused && _started;
 }
 
 void Timer::draw(SDL_Renderer* renderer) {
@@ -100,16 +78,15 @@ void Timer::draw(SDL_Renderer* renderer) {
 }
 
 void Timer::update(SDL_Renderer* renderer) {
-	//Set text to be rendered
-	timeText.str("");
-	timeText << "Timer: " << (int) (getTicks() / 1000.f);
+	_time_text.str("");
+	_time_text << "Timer: " << (int) (getTicks() / 1000.f);
 
-	_text->reloadTexture(renderer, timeText.str().c_str(), WHITE);
+	_text->reloadTexture(renderer, _time_text.str().c_str(), WHITE);
 }
 
 void Timer::pollEvents(SDL_Event& event) {
 	if (event.type == SDL_KEYDOWN) {
-		//Start/stop
+		// Start/stop
 		if (event.key.keysym.sym == SDLK_b) {
 			if (isStarted()) {
 				stop();
@@ -118,7 +95,7 @@ void Timer::pollEvents(SDL_Event& event) {
 				start();
 			}
 		}
-		//Pause/unpause
+		// Pause/unpause
 		else if (event.key.keysym.sym == SDLK_p) {
 			if (isPaused()) {
 				unpause();

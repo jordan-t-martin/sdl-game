@@ -12,6 +12,10 @@
 
 const int SCREEN_WIDTH = 840;
 const int SCREEN_HEIGHT = 640;
+const std::string FONT_PATH_BOLD = "assets/consolab.ttf";
+const int FONT_SIZE_SMALL = 30;
+const int FONT_SIZE_BIG = 50;
+const SDL_Color WHITE = { 255, 255, 255 , 255 };
 
 // Poll all events in game loop and objects
 void pollEvents(Window& window, Player& player, Projectile& projectiles, bool& start, bool& paused, bool& quit) {
@@ -66,13 +70,13 @@ int main(int argc, char** argv) {
 	std::shared_ptr<Projectile> projectiles(new Projectile(Window::renderer));
 
 	// Text
-	Text title(Window::renderer, "assets/consolab.ttf", 30, "Target Practice!", { 255, 255, 255 , 255 }, 20, 20);
-	Text score(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles->getScore()), { 255, 255, 255 , 255 }, 20, 80);
-	Text start_text = Text(Window::renderer, "assets/consolab.ttf", 50, "PRESS ENTER TO START", { 255, 255, 255 , 255 }, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	Text title(Window::renderer, FONT_PATH_BOLD, FONT_SIZE_SMALL, "Target Practice!", WHITE, 20, 20);
+	Text score(Window::renderer, FONT_PATH_BOLD, FONT_SIZE_SMALL, "Score: " + std::to_string(projectiles->getScore()), WHITE, 20, 80);
+	Text start_text = Text(Window::renderer, FONT_PATH_BOLD, FONT_SIZE_BIG, "PRESS ENTER TO START", WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	start_text.center();
-	Text pause_text = Text(Window::renderer, "assets/consolab.ttf", 50, "PAUSED", { 255, 255, 255 , 255 }, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	Text pause_text = Text(Window::renderer, FONT_PATH_BOLD, FONT_SIZE_BIG, "PAUSED", WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	pause_text.center();
-	Text end_text = Text(Window::renderer, "assets/consolab.ttf", 30, "PRESS ENTER TO PLAY AGAIN. PRESS ESCAPE TO QUIT.", { 255, 255, 255 , 255 }, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	Text end_text = Text(Window::renderer, FONT_PATH_BOLD, FONT_SIZE_SMALL, "PRESS ENTER TO PLAY AGAIN. PRESS ESCAPE TO QUIT.", WHITE, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	end_text.center();
 
 	// Timer

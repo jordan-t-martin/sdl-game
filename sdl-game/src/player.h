@@ -26,13 +26,11 @@ public:
 private:
 	std::vector<std::shared_ptr<Sprite>> createSprites();
 	
-	int screen_width, screen_height;
 	int _frame = 0;
-	int _dir = down;
-	int _prev_dir = down;
-	int _anim_speed = 5;
+	int screen_width, screen_height;
+	int _dir = down,_prev_dir = down;
+	int _anim_speed = 5, _player_speed = 4;
 	bool _walking = false; 
-	int _player_speed = 4;
 	std::vector<SDL_Texture*> _textures;
 	std::vector<std::shared_ptr<Sprite>> _sprites;
 

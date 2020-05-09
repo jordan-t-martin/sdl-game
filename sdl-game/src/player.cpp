@@ -1,6 +1,6 @@
 #include "player.h"
 
-// Use color contructor because multiple sprites are passed in to process textures
+// Use color contructor as no need for image path. Sprites will be used instead.
 Player::Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g, int b, int a)
 	: Rect(renderer, w, h, x, y, r, g, b, a)
 {
@@ -10,12 +10,11 @@ Player::Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g,
 	// Self create sprites
 	_sprites = createSprites();
 	
-	// For all sprites created...
+	// For all sprites
 	for (size_t i = 0; i < _sprites.size(); i++) {
 		// Create surface from image using file path
 		auto surface = IMG_Load(_sprites.at(i)->getTexturePath().c_str());
 
-		// Check if surface was created successfully
 		if (!surface) {
 			std::cerr << "Failed to create player surface.\n";
 		}
@@ -23,12 +22,11 @@ Player::Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g,
 		// Create texture from surface
 		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-		// Check if texture was created successfully
 		if (!texture) {
 			std::cerr << "Failed to create player texture: " << i << "\n";
 		}
 
-		// Add texture to vector
+		// Add spritesheet texture to vector
 		_textures.push_back(texture);
 
 		// Free surface memory
@@ -38,25 +36,19 @@ Player::Player(SDL_Renderer* renderer, int w, int h, int x, int y, int r, int g,
 }
 
 Player::~Player() {
-	// Destroy textures
 	for(auto texture : _textures)
 		if (texture != NULL)
 			SDL_DestroyTexture(texture);
 }
 
-// Create and return sprites using constant values from class
 std::vector<std::shared_ptr<Sprite>> Player::createSprites() {
-
-	// Vector to hold sprites
 	std::vector<std::shared_ptr<Sprite>> sprites;
 
-	// Create sprites from constants
 	std::shared_ptr<Sprite> left(new Sprite(PLAYER_LEFT_SPRITE_NUM, PLAYER_SIZE, PLAYER_LEFT_PATH));
 	std::shared_ptr<Sprite> right(new Sprite(PLAYER_RIGHT_SPRITE_NUM, PLAYER_SIZE, PLAYER_RIGHT_PATH));
 	std::shared_ptr<Sprite> up(new Sprite(PLAYER_UP_SPRITE_NUM, PLAYER_SIZE, PLAYER_UP_PATH));
 	std::shared_ptr<Sprite> down(new Sprite(PLAYER_DOWN_SPRITE_NUM, PLAYER_SIZE, PLAYER_DOWN_PATH));
 
-	// Load into vector
 	sprites.push_back(left);
 	sprites.push_back(right);
 	sprites.push_back(up);
@@ -65,12 +57,10 @@ std::vector<std::shared_ptr<Sprite>> Player::createSprites() {
 	return sprites;
 }
 
-// Render updates to the screen every tick
 void Player::draw(SDL_Renderer* renderer) {
-	// Create rectangle using position and dimensions
+	// Create new rectangle using position and dimensions
 	SDL_Rect rect = { _x, _y, _w, _h };
 
-	// Check that clips exists
 	if (_sprites.at(_dir)->getSpriteClips() == nullptr) {
 		std::cerr << "Clips are empty.\n";
 		return;
@@ -79,10 +69,11 @@ void Player::draw(SDL_Renderer* renderer) {
 	// Switch texture to correct direction
 	_texture = _textures.at(_dir);
 
+	// Reset frame if direction changed
 	if (_dir != _prev_dir)
 		_frame = 0;
 
-	// If character is walking...
+	// If character is walking, play animation
 	if (_walking) {
 		// Increment animation frame
 		_frame++;
@@ -93,79 +84,64 @@ void Player::draw(SDL_Renderer* renderer) {
 			_frame = 0;
 	}
 	
-	// Set the rectangle to be the size of the sprite using clips
+	// Set the object rectangle to be the size of the sprite using clips
 	rect.w = _sprites.at(_dir)->getSpriteClips()[_frame/_anim_speed].w;
 	rect.h = _sprites.at(_dir)->getSpriteClips()[_frame/_anim_speed].h;
 
-	// If texture exists, then copy texture to rectangle. 
 	if (_texture) {
-		// Pass in clip to render only portion of texture onto rect
+		// Pass in clip to render only portion of spritesheet texture onto object rectangle
 		SDL_RenderCopy(renderer, _texture, &_sprites.at(_dir)->getSpriteClips()[_frame/_anim_speed], &rect);
 	}
 
 	_prev_dir = _dir;
 }
 
-// Make updates to player every tick
 void Player::update() {
 	// Get state of keyboard to detect holding down of keys
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-	// When key is held for WASD
-	// - Set walking state to true
-	// - Change direction
-	// - Reset frame so new animation can start
-	// - Adjust position
-
-	if (keystate[SDL_SCANCODE_A]) { // [A] key
+	if (keystate[SDL_SCANCODE_A]) { 
 		_walking = true;
 		_dir = left;
-		//_frame = 0;
-		if(!outOfBounds(_x - 3, _y))
+		if(!outOfBounds(_x - _player_speed, _y))
 			_x -= _player_speed;
 	}
-	if (keystate[SDL_SCANCODE_D]) { // [D] key
+	if (keystate[SDL_SCANCODE_D]) { 
 		_walking = true;
 		_dir = right;
-		//_frame = 0;
-		if (!outOfBounds(_x + 3, _y))
+		if (!outOfBounds(_x + _player_speed, _y))
 			_x += _player_speed;
 	}
-	if (keystate[SDL_SCANCODE_W]) { // [W] key
+	if (keystate[SDL_SCANCODE_W]) { 
 		_walking = true;
 		_dir = up;
-		//_frame = 0;
-		if (!outOfBounds(_x, _y - 3))
+		if (!outOfBounds(_x, _y - _player_speed))
 			_y -= _player_speed;
 	}
-	if (keystate[SDL_SCANCODE_S]) { // [S] key
+	if (keystate[SDL_SCANCODE_S]) { 
 		_walking = true;
 		_dir = down;
-		//_frame = 0;
-		if (!outOfBounds(_x, _y + 3))
+		if (!outOfBounds(_x, _y + _player_speed))
 			_y += _player_speed;
 	}
 }
 
-// Check if an event has happened every tick
 void Player::pollEvents(SDL_Event& event) {
 	if (event.type == SDL_KEYDOWN) {
 
 	}
 	if (event.type == SDL_KEYUP) {
 		switch (event.key.keysym.sym) {
-		// For WASD keys, set walking state to false when key is released
-
-		case SDLK_a: // [A] key
+		case SDLK_a: 
 			_walking = false;
 			break;
-		case SDLK_d: // [D] key
+		case SDLK_d: 
 			_walking = false;
 			break;
-		case SDLK_w: // [W] key
+		case SDLK_w: 
 			_walking = false;
 			break;
-		case SDLK_s: // [S] key
+		case SDLK_s: 
 			_walking = false;
 			break;
 		}
@@ -173,7 +149,6 @@ void Player::pollEvents(SDL_Event& event) {
 }
 
 // Handle player variables when shooting
-// Takes is horizontal/vertical distance from start to end
 void Player::shoot(int diff_x, int diff_y) {
 	// Shooting is not allowed while walking, do nothing
 	if (_walking)
@@ -213,7 +188,7 @@ void Player::shoot(int diff_x, int diff_y) {
 
 bool Player::outOfBounds(int x, int y) {
 	return (
-		x < 0 || 
+		x < 0 ||
 		y < screen_height - 200 ||
 		x + _w > screen_width ||
 		y + _h > screen_height

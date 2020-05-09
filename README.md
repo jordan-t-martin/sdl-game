@@ -8,3 +8,6 @@ Move Left - A<br/>
 Move Down - S<br/>
 Move Right - D<br/>
 Quit - ESC<br/>
+
+## Tips
+You cannot shoot and run at the same time. Try to line up an angle to hit the most targets at once.

@@ -10,47 +10,43 @@
 #include <string>
 #include <iostream>
 
-// Screen dimensions
 const int SCREEN_WIDTH = 840;
 const int SCREEN_HEIGHT = 640;
 
-// Poll all events in objects and pause
+// Poll all events in game loop and objects
 void pollEvents(Window& window, Player& player, Projectile& projectiles, bool& start, bool& paused, bool& quit) {
 	SDL_Event event;
 
 	if (SDL_PollEvent(&event)){
-		window.pollEvents(event);
-		if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) {
-			start = true;
-		}
-		if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
-			quit = true;
-		}
-		if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p) {
-			if(start)
-				paused = !paused;
-		}
+		// Window [X] button
+		window.pollEvents(event, quit);
+
+		// Start, quit, pause
+		if(event.type == SDL_KEYDOWN)
+			switch (event.key.keysym.sym) {
+			case (SDLK_RETURN):
+				start = true;
+				break;
+			case (SDLK_ESCAPE):
+				quit = true;
+				break;
+			case (SDLK_p):
+				if (start)
+					paused = !paused;
+			}
+
+		// Objects
 		if (!paused)
 		{
 			player.pollEvents(event);
 			projectiles.pollEvents(event);
-			//window.pollEvents(event);
 		}
 	}
 }
 
-void pause(Window& window, SDL_Renderer* renderer, Rect screenshot) {
-	//Rect screenshot = Rect(renderer, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, window.saveScreenshot());
-	Text pause_text = Text(renderer, "assets/consolab.ttf", 30, "PAUSED", { 255, 0, 0 , 255 }, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	
-	pause_text.draw(renderer);
-	screenshot.draw(renderer);
-	window.clear();
-}
-
 int main(int argc, char** argv) {
 	
-	// Create all game objects
+// Create all game objects
 
 	// Game window
 	Window window("Target Practice!", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -59,9 +55,9 @@ int main(int argc, char** argv) {
 	std::shared_ptr<Rect> cursor(new Rect(Window::renderer, 64, 64, 0, 0, "assets/textures/reticle_sprite.png"));
 
 	// Still objects
-	Rect wall(Window::renderer, 840, 320, 0, 0, "assets/textures/wood.png");
-	Rect dirt(Window::renderer, 840, 120, 0, 320, 101, 67, 33, 80);
-	Rect grass(Window::renderer, 840, 200, 0, 440, 125, 125, 130, 100);
+	Rect wall(Window::renderer, SCREEN_WIDTH, 320, 0, 0, "assets/textures/wood.png");
+	Rect dirt(Window::renderer, SCREEN_WIDTH, 120, 0, 320, 101, 67, 33, 80);
+	Rect grass(Window::renderer, SCREEN_WIDTH, 200, 0, 440, 125, 125, 130, 100);
 
 	// Player character
 	std::shared_ptr<Player> player(new Player(Window::renderer, 64, 64, 500, 500, 0, 0, 0, 0));
@@ -82,6 +78,7 @@ int main(int argc, char** argv) {
 	// Timer
 	std::shared_ptr<Timer> timer(new Timer(Window::renderer));
 
+	// Flags
 	bool paused = false;
 	bool start = false;
 	bool quit = false;
@@ -96,9 +93,12 @@ int main(int argc, char** argv) {
 	while (!start && !quit)
 		pollEvents(window, *player, *projectiles, start, paused, quit);
 
-	// Game loop, stops if window is closed
+	// New game
 	while (!window.isClosed()) {
 		timer->start();
+
+		// Game loop
+		// Poll events, update, and draw all objects
 		while (!window.isClosed() && start) {
 			pollEvents(window, *player, *projectiles, start, paused, quit);
 
@@ -107,6 +107,7 @@ int main(int argc, char** argv) {
 			grass.draw(Window::renderer);
 			dirt.draw(Window::renderer);
 
+			// Check if game has ended
 			if (projectiles->win()) {
 				start = false;
 				break;
@@ -133,6 +134,7 @@ int main(int argc, char** argv) {
 			window.update(cursor);
 			cursor->draw(Window::renderer);
 
+			// Check for pause event
 			if (paused) {
 				timer->pause();
 				pause_text.draw(Window::renderer);
@@ -142,13 +144,14 @@ int main(int argc, char** argv) {
 				timer->unpause();
 			}
 			else {
-				// Update screen with all draws
 				window.clear();
 			}
 		}
 
+		// If break out of loop, game has ended
 		timer->stop();
 
+		// Give user choice to quit or start again
 		if (!start && !quit) {
 			end_text.draw(Window::renderer);
 			timer->setX(SCREEN_WIDTH / 2);
@@ -160,21 +163,15 @@ int main(int argc, char** argv) {
 				pollEvents(window, *player, *projectiles, start, paused, quit);
 		}
 
+		// Exit the game
 		if (quit)
 			break;
 
+		// New game
 		if (start) {
-			// Player character
+			// Reset objects and variables
 			player.reset(new Player(Window::renderer, 64, 64, 500, 500, 0, 0, 0, 0));
-
-			// Targets and bullets
 			projectiles.reset(new Projectile(Window::renderer));
-
-			// Text
-
-			Text score(Window::renderer, "assets/consolab.ttf", 30, "Score: " + std::to_string(projectiles->getScore()), { 255, 0, 0 , 255 }, 20, 80);
-			
-			// Timer
 			timer.reset(new Timer(Window::renderer));
 
 			bool paused = false;
@@ -184,6 +181,5 @@ int main(int argc, char** argv) {
 
 	}
 
-	// Successful exit
 	return 0;
 }

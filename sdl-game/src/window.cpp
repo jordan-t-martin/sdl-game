@@ -83,15 +83,12 @@ void Window::update(std::shared_ptr<Rect> cursor) {
 	cursor->setY(_mouse_y- (cursor->getH() / 2));
 }
 
-void Window::pollEvents(SDL_Event &event) {
+void Window::pollEvents(SDL_Event &event, bool& quit) {
 	switch (event.type) {
 	// 'X' button in window to quit.
 	case SDL_QUIT:
 		_closed = true;
-		break;
-	case SDL_KEYDOWN:
-		if (event.key.keysym.sym == SDLK_ESCAPE)
-			_closed = true;
+		quit = true;
 		break;
 
 	default:

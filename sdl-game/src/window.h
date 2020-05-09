@@ -12,7 +12,7 @@ public:
 	~Window();
 
 	void update(std::shared_ptr<Rect> cursor);
-	void pollEvents(SDL_Event& event);
+	void pollEvents(SDL_Event& event, bool& quit);
 	void clear() const;
 
 	inline bool isClosed() const { return _closed; }

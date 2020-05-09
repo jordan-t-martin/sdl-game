@@ -6,13 +6,10 @@ SDL_Renderer *Window::renderer = nullptr;
 Window::Window(const std::string& title, int width, int height) :
 	_title(title), _width(width), _height(height)
 {
-	// If window initialized -> window not closed
-	// If window failed to initialize -> window closed
 	_closed = !init();
 }
 
 Window::~Window() {
-	// Destroy renderer, window, SDL Image, SDL Text, SDL
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(_window);
 	IMG_Quit();
@@ -74,7 +71,6 @@ bool Window::init() {
 }
 
 void Window::update(std::shared_ptr<Rect> cursor) {
-	// Cursor Image
 	// Get x/y coordinate of mouse
 	SDL_GetMouseState(&_mouse_x, &_mouse_y);
 	
@@ -102,6 +98,6 @@ void Window::clear() const {
 	SDL_RenderPresent(renderer);
 	// Set color white
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0); 
-	// Redraw screen with set color
+	// Draw screen with set color
 	SDL_RenderClear(renderer); 
 }

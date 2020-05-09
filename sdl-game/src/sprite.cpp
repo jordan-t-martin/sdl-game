@@ -15,7 +15,7 @@ SDL_Rect* Sprite::loadSpriteClips() {
 	SDL_Rect* sprite_clips = new SDL_Rect[_sprite_num];
 
 	// Find the dimensions of the provided sprite sheet
-	int dim = ceil(sqrt((_sprite_num))); 
+	int dim = ceil(sqrt(_sprite_num)); 
 
 	// Find "clips" for each individual sprite
 	for (int i = 0; i < dim; i++) {

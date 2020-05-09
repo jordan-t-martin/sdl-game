@@ -21,5 +21,5 @@ public:
 	void inline setY(float y) { _y = y; }
 
 private:
-	float _x, _y = 0;
+	float _x = 0, _y = 0;
 };

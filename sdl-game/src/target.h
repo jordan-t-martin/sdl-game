@@ -19,12 +19,13 @@ public:
 private:
 
 	void swapPoints();
-	int _health = 50;
-	Text* _health_text;
 
+
+	int _health = 50;
 	bool _moving;
 	float _start_x, _start_y, _end_x, _end_y;
 	float _speed = 250, _elapsed = 0.01f, _distance;
+	Text* _health_text;
 	Vector2  _v, _start_v, _end_v, _unit_v, _position_v;
 
 	// Constants for text

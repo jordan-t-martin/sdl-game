@@ -9,7 +9,6 @@ Target::Target(SDL_Renderer* renderer, int w, int h, float start_x, float start_
 	_end_v = Vector2(_end_x, _end_y);
 	_position_v = Vector2((float) _x, (float)_y);
 	_unit_v = _v.normalize(_v.subtract(_end_v, _start_v));
-
 	_distance = _v.distance(_start_v, _end_v);
 
 	_moving = true;
@@ -27,14 +26,14 @@ void Target::update() {
 	if (_moving)
 		_position_v = _v.add(_position_v, _v.multiply_scalar((_speed * _elapsed), _unit_v));
 
+	// Reached end of path, reverse
 	if (_v.distance(_start_v, _position_v) > _distance) {
-		//_position_v = _end_v;
-		//_moving = false;
 		swapPoints();
 	}
+
 	// Update x/y coords with position vector
-	_x = (int)_position_v.getX();
-	_y = (int)_position_v.getY();
+	_x = (int) _position_v.getX();
+	_y = (int) _position_v.getY();
 	_health_text->setX(_x + 5);
 	_health_text->setY(_y - 30);
 }

@@ -35,6 +35,7 @@ Rect::~Rect() {
 }
 
 void Rect::draw(SDL_Renderer *renderer) const {
+	// New rect with updated position
 	SDL_Rect rect = { _x, _y, _w, _h };
 
 	// Texture render

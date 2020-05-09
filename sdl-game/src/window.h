@@ -22,11 +22,10 @@ public:
 private:
 	bool init();
 
-	std::string _title;
-	int _width = 800;
-	int _height = 600;
+	int _width = 800, _height = 600;
 	int _mouse_x, _mouse_y = 0;
 	bool _closed = false;
+	std::string _title;
 	SDL_Window* _window = nullptr;
 	
 };

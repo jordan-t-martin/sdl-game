@@ -19,7 +19,6 @@ public:
 private:
 	void swapPoints();
 
-
 	int _health = 50;
 	bool _moving;
 	float _start_x, _start_y, _end_x, _end_y;

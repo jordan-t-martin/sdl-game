@@ -28,7 +28,6 @@ void Projectile::draw(SDL_Renderer* renderer) {
 	}
 }
 
-// Runs every tick
 void Projectile::update(SDL_Renderer* renderer, std::shared_ptr<Player> player) {
 	// Shoot if you can
 	if (_cooldown == 0) {
@@ -180,7 +179,7 @@ std::map<int, std::pair<int, int>> Projectile::setupObstLocations() {
 std::vector<std::shared_ptr<Target>> Projectile::createTargets(SDL_Renderer* renderer) {
 	std::vector<std::shared_ptr<Target>> targets;
 	for (size_t i = 0; i < _target_locations.size(); i++) {
-		std::shared_ptr<Target> target(new Target(renderer, 56, 56, _target_locations[i].point1.first, _target_locations[i].point1.second, _target_locations[i].point2.first, _target_locations[i].point2.second, "assets/textures/target.png"));
+		std::shared_ptr<Target> target(new Target(renderer, TARGET_SIZE, TARGET_SIZE, _target_locations[i].point1.first, _target_locations[i].point1.second, _target_locations[i].point2.first, _target_locations[i].point2.second, TARGET_FILE_PATH));
 		targets.push_back(target);
 	}
 	return targets;
@@ -189,7 +188,7 @@ std::vector<std::shared_ptr<Target>> Projectile::createTargets(SDL_Renderer* ren
 std::vector<std::shared_ptr<Rect>> Projectile::createObstacles(SDL_Renderer* renderer) {
 	std::vector<std::shared_ptr<Rect>> obstacles;
 	for (size_t i = 0; i < _obst_locations.size(); i++) {
-		std::shared_ptr<Rect> obstacle(new Rect(renderer, 45, 32, _obst_locations[i].first, _obst_locations[i].second, "assets/textures/rock.png"));
+		std::shared_ptr<Rect> obstacle(new Rect(renderer, ROCK_W, ROCK_H, _obst_locations[i].first, _obst_locations[i].second, ROCK_FILE_PATH));
 		obstacles.push_back(obstacle);
 	}
 	return obstacles;

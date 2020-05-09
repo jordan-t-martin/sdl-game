@@ -43,8 +43,12 @@ private:
 	std::vector<std::shared_ptr<Rect>> _obstacles;
 	std::vector<std::shared_ptr<Bullet>> _bullets;
 
+	// Constants for object creation
 	const int BULLET_SIZE = 12;
+	const int TARGET_SIZE = 56;
+	const int ROCK_W = 45;
+	const int ROCK_H = 32;
 	const int COOLDOWN_MAX = 10;
-
-	// Target constants
+	const std::string TARGET_FILE_PATH = "assets/textures/target.png";
+	const std::string ROCK_FILE_PATH = "assets/textures/rock.png";
 };

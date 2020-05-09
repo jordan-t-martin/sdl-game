@@ -12,7 +12,6 @@ public:
 
 	virtual void draw(SDL_Renderer* renderer) const;
 	bool colliding(Rect* a);
-	void pollEvents(SDL_Event& event);
 
 	int inline getW() { return _w; }
 	int inline getH() { return _h; }

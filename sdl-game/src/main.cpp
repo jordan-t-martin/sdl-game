@@ -103,7 +103,7 @@ int main(int argc, char** argv) {
 
 		// Game loop
 		// Poll events, update, and draw all objects
-		while (!window.isClosed() && start) {
+		while (!window.isClosed() && start && !quit) {
 			pollEvents(window, *player, *projectiles, start, paused, quit);
 
 			// Still objects

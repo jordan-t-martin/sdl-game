@@ -1,4 +1,8 @@
 # Target Practice!
+## Install
+Please download and install the Visual C++ redistributable for Visual Studio 2019 in order to run this game:
+https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
+
 Shoot all the targets to win! Aim your shots between the rocks to hit the targets. Move around to get the best angles. The goal is to destroy all the targets in the fastest time. After you win, you can choose to play another game or exit.
 ## Controls
 Shoot - Click and hold<br/>

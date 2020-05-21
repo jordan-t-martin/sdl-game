@@ -2,7 +2,6 @@
 
 #define PI 3.14159265
 
-// take distance out
 Bullet::Bullet(SDL_Renderer* renderer, int w, int h, float start_x, float start_y, float end_x, float end_y, int r, int g, int b, int a)
 	: Rect(renderer, w, h, (int) start_x, (int) start_y, r, g, b, a),
 	_start_x(start_x), _start_y(start_y), _end_x(end_x), _end_y(end_y)
